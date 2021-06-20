@@ -12,55 +12,172 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final urlInputController = TextEditingController();
-  var responseBody;
+  var response;
+  final _parameterFormKey = GlobalKey<FormState>();
+  List<String?> keyList = [null];
+  List<String?> valueList = [null];
+  List<Widget> parameterList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    urlInputController.text = "https://jsonplaceholder.typicode.com/todos/1";
+    parameterList = [
+      ParameterInput(keyList, valueList, removeParameterInput, key: UniqueKey())
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        child: ListView(
-          children: [
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: SearchChoices.single(
-                    items: [
-                      DropdownMenuItem(child: Text('get')),
-                      DropdownMenuItem(child: Text('post'))
+      body: Column(
+        children: [
+          Row(
+            children: [
+              Flexible(
+                flex: 1,
+                child: SearchChoices.single(
+                  items: [
+                    DropdownMenuItem(
+                      child: Text('GET'),
+                      value: 'GET',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('POST'),
+                      value: 'POST',
+                    )
+                  ],
+                  hint: "Method",
+                  value: "GET",
+                  searchHint: null,
+                  displayClearIcon: false,
+                  onChanged: print,
+                  dialogBox: true,
+                  isExpanded: false,
+                  autofocus: true,
+                ),
+              ),
+              Flexible(
+                flex: 8,
+                child: TextField(
+                  controller: urlInputController,
+                ),
+              ),
+              ElevatedButton(onPressed: fetchRequest, child: Text("Submit"))
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: 4,
+                child: Form(
+                  key: _parameterFormKey,
+                  child: Column(
+                    children: [
+                      ...parameterList,
+                      ElevatedButton(
+                          onPressed: addParameterInput, child: Text('Add More'))
                     ],
-                    hint: "Select one",
-                    searchHint: null,
-                    displayClearIcon: false,
-                    onChanged: print,
-                    dialogBox: false,
-                    isExpanded: true,
-                    menuConstraints: BoxConstraints.tight(Size.fromHeight(350)),
-                    autofocus: true,
                   ),
                 ),
-                Flexible(
-                  flex: 8,
-                  child: TextField(
-                    controller: urlInputController,
-                  ),
+              ),
+              Flexible(
+                flex: 6,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        response != null
+                            ? Text("status: ${response.statusCode}")
+                            : Container(),
+                        Text('test')
+                      ],
+                    ),
+                    JsonViewer(
+                        response != null ? json.decode(response.body) : null),
+                  ],
                 ),
-                ElevatedButton(onPressed: fetchRequest, child: Text("Submit"))
-              ],
-            ),
-            JsonViewer(responseBody),
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
 
+  void addParameterInput() {
+    keyList.add(null);
+    valueList.add(null);
+    setState(() {
+      parameterList.add(ParameterInput(keyList, valueList, removeParameterInput,
+          key: UniqueKey()));
+    });
+  }
+
+  void removeParameterInput(Widget input) {
+    setState(() {
+      parameterList.remove(input);
+    });
+  }
+
   void fetchRequest() async {
     var client = http.Client();
-    var response = await client.get(Uri.parse(urlInputController.text));
+    var res = await client.get(Uri.parse(urlInputController.text));
     setState(() {
-      responseBody = json.decode(response.body);
+      response = res;
     });
+  }
+}
+
+class ParameterInput extends StatefulWidget {
+  final keyList;
+  final valueList;
+  final Function onDelete;
+  const ParameterInput(this.keyList, this.valueList, this.onDelete, {Key? key})
+      : super(key: key);
+
+  @override
+  _ParameterInputState createState() => _ParameterInputState();
+}
+
+class _ParameterInputState extends State<ParameterInput> {
+  bool enabled = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          Checkbox(
+              value: enabled,
+              onChanged: (_) {
+                setState(() {
+                  enabled = !enabled;
+                });
+              }),
+          Flexible(
+            child: TextFormField(
+              decoration: InputDecoration(labelText: 'Key'),
+              onChanged: (value) {},
+            ),
+          ),
+          Flexible(
+            child: TextFormField(
+              decoration: InputDecoration(labelText: 'Value'),
+              onChanged: (value) {},
+            ),
+          ),
+          InkWell(
+            onTap: () => widget.onDelete(widget),
+            child: Icon(
+              Icons.delete_forever_outlined,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

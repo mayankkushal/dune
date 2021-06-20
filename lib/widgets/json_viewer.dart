@@ -16,25 +16,27 @@ class _JsonViewerState extends State<JsonViewer> {
   }
 
   static getContentWidget(dynamic content) {
-    if (content is List) {
+    if (content == null)
+      return Text('{}');
+    else if (content is List) {
       return JsonArrayViewer(content, notRoot: false);
     } else {
-      return JsonObject(content ?? {}, notRoot: false);
+      return JsonObjectViewer(content, notRoot: false);
     }
   }
 }
 
-class JsonObject extends StatefulWidget {
+class JsonObjectViewer extends StatefulWidget {
   final Map<String, dynamic> jsonObj;
   final bool notRoot;
 
-  JsonObject(this.jsonObj, {this.notRoot: false});
+  JsonObjectViewer(this.jsonObj, {this.notRoot: false});
 
   @override
-  JsonObjectState createState() => new JsonObjectState();
+  JsonObjectViewerState createState() => new JsonObjectViewerState();
 }
 
-class JsonObjectState extends State<JsonObject> {
+class JsonObjectViewerState extends State<JsonObjectViewer> {
   Map<String, bool> openFlag = Map();
 
   @override
@@ -102,7 +104,7 @@ class JsonObjectState extends State<JsonObject> {
     if (content is List) {
       return JsonArrayViewer(content, notRoot: true);
     } else {
-      return JsonObject(content, notRoot: true);
+      return JsonObjectViewer(content, notRoot: true);
     }
   }
 
@@ -257,8 +259,8 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
     List<Widget> list = [];
     int i = 0;
     for (dynamic content in widget.jsonArray) {
-      bool ex = JsonObjectState.isExtensible(content);
-      bool ink = JsonObjectState.isInkWell(content);
+      bool ex = JsonObjectViewerState.isExtensible(content);
+      bool ink = JsonObjectViewerState.isInkWell(content);
       list.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -288,7 +290,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
       ));
       list.add(const SizedBox(height: 4));
       if (openFlag[i]) {
-        list.add(JsonObjectState.getContentWidget(content));
+        list.add(JsonObjectViewerState.getContentWidget(content));
       }
       i++;
     }
@@ -345,7 +347,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
       } else {
         return InkWell(
             child: Text(
-              'Array<${JsonObjectState.getTypeName(content)}>[${content.length}]',
+              'Array<${JsonObjectViewerState.getTypeName(content)}>[${content.length}]',
               style: TextStyle(color: Colors.grey),
             ),
             onTap: () {
