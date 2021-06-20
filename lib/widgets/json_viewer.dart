@@ -3,24 +3,39 @@ library flutter_json_widget;
 import 'package:flutter/material.dart';
 
 class JsonViewer extends StatefulWidget {
+  final dynamic jsonObj;
+  JsonViewer(this.jsonObj);
+  @override
+  _JsonViewerState createState() => _JsonViewerState();
+}
+
+class _JsonViewerState extends State<JsonViewer> {
+  @override
+  Widget build(BuildContext context) {
+    return getContentWidget(widget.jsonObj);
+  }
+
+  static getContentWidget(dynamic content) {
+    if (content is List) {
+      return JsonArrayViewer(content, notRoot: false);
+    } else {
+      return JsonObject(content ?? {}, notRoot: false);
+    }
+  }
+}
+
+class JsonObject extends StatefulWidget {
   final Map<String, dynamic> jsonObj;
   final bool notRoot;
 
-  JsonViewer(this.jsonObj, {this.notRoot: false});
+  JsonObject(this.jsonObj, {this.notRoot: false});
 
   @override
-  JsonViewerState createState() => new JsonViewerState();
+  JsonObjectState createState() => new JsonObjectState();
 }
 
-class JsonViewerState extends State<JsonViewer> {
+class JsonObjectState extends State<JsonObject> {
   Map<String, bool> openFlag = Map();
-  Map<String, dynamic> jsonObj = {};
-
-  @override
-  void initState() {
-    super.initState();
-    jsonObj = widget.jsonObj;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +52,7 @@ class JsonViewerState extends State<JsonViewer> {
 
   _getList() {
     List<Widget> list = [];
-    for (MapEntry entry in jsonObj.entries) {
+    for (MapEntry entry in widget.jsonObj.entries) {
       bool ex = isExtensible(entry.value);
       bool ink = isInkWell(entry.value);
       list.add(Row(
@@ -87,7 +102,7 @@ class JsonViewerState extends State<JsonViewer> {
     if (content is List) {
       return JsonArrayViewer(content, notRoot: true);
     } else {
-      return JsonViewer(content, notRoot: true);
+      return JsonObject(content, notRoot: true);
     }
   }
 
@@ -242,8 +257,8 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
     List<Widget> list = [];
     int i = 0;
     for (dynamic content in widget.jsonArray) {
-      bool ex = JsonViewerState.isExtensible(content);
-      bool ink = JsonViewerState.isInkWell(content);
+      bool ex = JsonObjectState.isExtensible(content);
+      bool ink = JsonObjectState.isInkWell(content);
       list.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -273,7 +288,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
       ));
       list.add(const SizedBox(height: 4));
       if (openFlag[i]) {
-        list.add(JsonViewerState.getContentWidget(content));
+        list.add(JsonObjectState.getContentWidget(content));
       }
       i++;
     }
@@ -330,7 +345,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
       } else {
         return InkWell(
             child: Text(
-              'Array<${JsonViewerState.getTypeName(content)}>[${content.length}]',
+              'Array<${JsonObjectState.getTypeName(content)}>[${content.length}]',
               style: TextStyle(color: Colors.grey),
             ),
             onTap: () {
