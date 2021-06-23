@@ -23,11 +23,18 @@ class MainSection extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InputPane(
-              parameterFormKey: _parameterFormKey,
-              parameterList: parameterList,
-              onPressed: onPressed),
-          ResponsePane(response: response),
+          Flexible(
+            flex: 4,
+            fit: FlexFit.tight,
+            child: InputPane(
+                parameterFormKey: _parameterFormKey,
+                parameterList: parameterList,
+                onPressed: onPressed),
+          ),
+          Flexible(
+              flex: 6,
+              fit: FlexFit.tight,
+              child: ResponsePane(response: response)),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 library flutter_json_widget;
 
 import 'package:flutter/material.dart';
+import 'package:postwoman/theme.dart';
 
 class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;
@@ -72,8 +73,8 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
                 ),
           (ex && ink)
               ? InkWell(
-                  child: Text(entry.key,
-                      style: TextStyle(color: Colors.purple[900])),
+                  child:
+                      Text(entry.key, style: TextStyle(color: AppColors.red)),
                   onTap: () {
                     setState(() {
                       openFlag[entry.key] = !(openFlag[entry.key] ?? false);
@@ -83,7 +84,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
                   style: TextStyle(
                       color: entry.value == null
                           ? Colors.grey
-                          : Colors.purple[900])),
+                          : AppColors.yellow)),
           Text(
             ':',
             style: TextStyle(color: Colors.grey),
@@ -163,13 +164,13 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     } else if (entry.value is List) {
       if (entry.value.isEmpty) {
         return Text(
-          'Array[0]',
+          '[0]',
           style: TextStyle(color: Colors.grey),
         );
       } else {
         return InkWell(
             child: Text(
-              'Array<${getTypeName(entry.value[0])}>[${entry.value.length}]',
+              '[${entry.value.length}]',
               style: TextStyle(color: Colors.grey),
             ),
             onTap: () {
@@ -181,8 +182,7 @@ class JsonObjectViewerState extends State<JsonObjectViewer> {
     }
     return InkWell(
         child: Text(
-          'Object',
-          style: TextStyle(color: Colors.grey),
+          '{${entry.value.length}}',
         ),
         onTap: () {
           setState(() {
@@ -358,10 +358,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
       }
     }
     return InkWell(
-        child: Text(
-          'Object',
-          style: TextStyle(color: Colors.grey),
-        ),
+        child: Text('{}'),
         onTap: () {
           setState(() {
             openFlag[index] = !(openFlag[index]);

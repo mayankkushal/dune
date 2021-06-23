@@ -13,22 +13,18 @@ class ResponsePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 6,
-      fit: FlexFit.tight,
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              StatusSection(response: response),
-              Spacer(
-                flex: 1,
-              ),
-              ResponseSection(response: response),
-            ],
-          ),
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            StatusSection(response: response),
+            Spacer(
+              flex: 1,
+            ),
+            ResponseSection(response: response),
+          ],
         ),
       ),
     );
