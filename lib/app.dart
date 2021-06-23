@@ -13,7 +13,8 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: '/home',
       getPages: routes,
-      theme: AppTheme.light,
+      theme: AppTheme.dark,
+      darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
     );
   }
