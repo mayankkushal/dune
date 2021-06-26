@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:postwoman/screens/home/home.dart';
+import 'package:postwoman/controllers/ResponseController.dart';
+import 'package:postwoman/models/circle_decoration.dart';
+import 'package:postwoman/theme.dart';
 import 'package:provider/provider.dart';
 
 class InputPane extends HookWidget {
@@ -16,61 +19,89 @@ class InputPane extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = useScrollController();
-    ParameterInputController parameterInputController =
-        Provider.of<ParameterInputController>(context);
-
-    useEffect(() {
-      parameterInputController.addParameter(ParameterInputType.query, count: 4);
-    }, []);
     return Form(
       key: _parameterFormKey,
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Flexible(
-                flex: 1,
-                fit: FlexFit.tight,
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(7)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 1, 8.0, 1),
-                    child: Row(
-                      children: [Text('Parameters')],
-                    ),
-                  ),
-                ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: ContainedTabBarView(
+            tabBarProperties: TabBarProperties(
+              padding: EdgeInsets.only(bottom: 3),
+              indicator:
+                  CircleTabIndicator(color: AppColors.yellow, radius: 4.0),
+              labelColor: AppColors.yellow,
+              unselectedLabelColor: Colors.white,
+              background: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(7)),
               ),
-              Container(
-                child: Flexible(
-                  flex: 9,
-                  child: ListView(
-                    controller: scrollController,
-                    children: [...parameterInputController.queryParamMap.keys],
-                  ),
-                ),
-              ),
-              Flexible(
-                child: IconButton(
-                  onPressed: () {
-                    parameterInputController
-                        .addParameter(ParameterInputType.query);
-                    Timer(
-                        Duration(milliseconds: 125),
-                        () => scrollController
-                            .jumpTo(scrollController.position.maxScrollExtent));
-                  },
-                  icon: Icon(Icons.add),
-                ),
-              )
+            ),
+            tabBarViewProperties: TabBarViewProperties(
+              physics: NeverScrollableScrollPhysics(),
+            ),
+            tabs: [
+              TabBarItem("Query Params"),
+              TabBarItem("Headers"),
+              TabBarItem("Body"),
             ],
+            views: [
+              QueryParameterInput(),
+              Container(color: Colors.blue),
+              Container(color: Colors.blue),
+            ],
+            onChange: (index) => print(index),
           ),
         ),
       ),
     );
+  }
+}
+
+class TabBarItem extends StatelessWidget {
+  const TabBarItem(
+    this.text, {
+    Key? key,
+  }) : super(key: key);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: double.infinity,
+        alignment: Alignment.center,
+        child: Text(text));
+  }
+}
+
+class QueryParameterInput extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+    ReponseController parameterInputController =
+        Provider.of<ReponseController>(context);
+
+    return Column(children: [
+      Flexible(
+        flex: 9,
+        fit: FlexFit.tight,
+        child: ListView(
+          controller: scrollController,
+          children: [...parameterInputController.queryParamMap.keys],
+        ),
+      ),
+      Flexible(
+        child: IconButton(
+          onPressed: () {
+            parameterInputController.addParameter(ParameterInputType.query);
+            Timer(
+                Duration(milliseconds: 125),
+                () => scrollController
+                    .jumpTo(scrollController.position.maxScrollExtent));
+          },
+          icon: Icon(Icons.add),
+        ),
+      )
+    ]);
   }
 }

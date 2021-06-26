@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:postwoman/screens/home/home.dart';
+import 'package:postwoman/controllers/ResponseController.dart';
 import 'package:provider/provider.dart';
 
 class ParameterInput extends HookWidget {
@@ -9,8 +9,8 @@ class ParameterInput extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // final enabled = useState(true);
-    ParameterInputController parameterInputController =
-        Provider.of<ParameterInputController>(context);
+    ReponseController parameterInputController =
+        Provider.of<ReponseController>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -31,6 +31,8 @@ class ParameterInput extends HookWidget {
             Flexible(
               child: TextFormField(
                 decoration: InputDecoration(labelText: 'Key'),
+                initialValue: parameterInputController.getValue(
+                    ParameterInputType.query, this, 'key'),
                 onChanged: (value) {
                   parameterInputController.updateValue(
                       ParameterInputType.query, this, 'key', value);
@@ -42,6 +44,8 @@ class ParameterInput extends HookWidget {
             Flexible(
               child: TextFormField(
                 decoration: InputDecoration(labelText: 'Value'),
+                initialValue: parameterInputController.getValue(
+                    ParameterInputType.query, this, 'value'),
                 onChanged: (value) {
                   parameterInputController.updateValue(
                       ParameterInputType.query, this, 'value', value);

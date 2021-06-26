@@ -34,6 +34,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.background,
       fontFamily: 'Montserrat',
       cardColor: AppColors.black,
+      textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
       textTheme: TextTheme(
         headline1: TextStyle(color: Colors.white),
         headline2: TextStyle(color: Colors.white),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:search_choices/search_choices.dart';
+import 'package:postwoman/theme.dart';
+import 'package:postwoman/widgets/dropdown.dart';
+
+import '../../constants.dart';
 
 class UrlSection extends StatelessWidget {
   const UrlSection({
@@ -10,7 +13,8 @@ class UrlSection extends StatelessWidget {
 
   final TextEditingController urlInputController;
   final onSubmitPressed;
-
+  static var dropdownEditingController =
+      DropdownEditingController(value: METHODS[0]);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,25 +23,32 @@ class UrlSection extends StatelessWidget {
       children: [
         Flexible(
           flex: 1,
-          child: SearchChoices.single(
-            items: [
-              DropdownMenuItem(
-                child: Text('GET'),
-                value: 'GET',
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownFormField<Map<String, dynamic>>(
+              controller: dropdownEditingController,
+              onEmptyActionPressed: () async {},
+              decoration:
+                  InputDecoration(suffixIcon: Icon(Icons.arrow_drop_down)),
+              onSaved: (dynamic str) {},
+              dropdownHeight: 300,
+              onChanged: (dynamic str) {},
+              validator: (dynamic str) {},
+              dropdownColor: AppColors.background,
+              displayItemFn: (dynamic item) => Text(
+                item['name'],
               ),
-              DropdownMenuItem(
-                child: Text('POST'),
-                value: 'POST',
-              )
-            ],
-            hint: "Method",
-            value: "GET",
-            searchHint: null,
-            displayClearIcon: false,
-            onChanged: print,
-            dialogBox: true,
-            isExpanded: false,
-            autofocus: true,
+              findFn: (dynamic str) async => METHODS,
+              filterFn: (dynamic item, str) =>
+                  item['name'].toLowerCase().indexOf(str.toLowerCase()) >= 0,
+              dropdownItemFn: (dynamic item, position, focused,
+                      dynamic lastSelectedItem, onTap) =>
+                  ListTile(
+                title: Text(item['name']),
+                tileColor: focused ? Colors.red : Colors.transparent,
+                onTap: onTap,
+              ),
+            ),
           ),
         ),
         Flexible(

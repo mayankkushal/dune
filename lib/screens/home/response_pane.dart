@@ -1,7 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:glass/glass.dart';
+import 'package:postwoman/controllers/ResponseController.dart';
+import 'package:postwoman/theme.dart';
 import 'package:postwoman/widgets/json_viewer.dart';
+import 'package:provider/provider.dart';
 
 class ResponsePane extends StatelessWidget {
   const ResponsePane({
@@ -10,23 +15,54 @@ class ResponsePane extends StatelessWidget {
   }) : super(key: key);
 
   final response;
-
   @override
   Widget build(BuildContext context) {
+    ReponseController parameterInputController =
+        Provider.of<ReponseController>(context);
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            StatusSection(response: response),
-            Spacer(
-              flex: 1,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                StatusSection(response: response),
+                Spacer(
+                  flex: 1,
+                ),
+                ResponseSection(response: response),
+              ],
             ),
-            ResponseSection(response: response),
+            parameterInputController.isLoading ? ResponseLoader() : Container(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ResponseLoader extends StatelessWidget {
+  const ResponseLoader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SpinKitChasingDots(
+              color: AppColors.yellow,
+              size: 50.0,
+            ),
+            Text("Fetching Response")
+          ],
+        ),
+      ).asGlass(clipBorderRadius: BorderRadius.circular(10)),
     );
   }
 }
@@ -51,8 +87,8 @@ class ResponseSection extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
           child: SingleChildScrollView(
-            child: JsonViewer(response.value != null
-                ? json.decode(response.value!.body)
+            child: new JsonViewer(response.value != null
+                ? json.decode(response.value!.response.body)
                 : null),
           ),
         ),
@@ -69,6 +105,10 @@ class StatusSection extends StatelessWidget {
 
   final response;
 
+  String getSize(int length) {
+    return (length / 1024).toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Flexible(
@@ -80,14 +120,17 @@ class StatusSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(7)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              if (response.value != null)
-                Text("Status: ${response.value!.statusCode}")
-              else
-                Container(),
-            ],
-          ),
+          child: (response.value != null)
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                      Text("Status: ${response.value!.response.statusCode}"),
+                      Text(
+                          "Time Elapsed: ${response.value!.stopwatch.elapsed.inMilliseconds}ms"),
+                      Text(
+                          "Size: ${getSize(response.value!.response.contentLength)}KB")
+                    ])
+              : Text('Response'),
         ),
       ),
     );
