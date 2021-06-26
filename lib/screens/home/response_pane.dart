@@ -86,11 +86,18 @@ class ResponseSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(7)),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-          child: SingleChildScrollView(
-            child: new JsonViewer(response.value != null
-                ? json.decode(response.value!.response.body)
-                : null),
-          ),
+          child: response.value != null
+              ? SingleChildScrollView(
+                  child: JsonViewer(json.decode(response.value!.response.body)),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/response_background.png'),
+                        fit: BoxFit.cover),
+                  ),
+                ),
         ),
       ),
     );
