@@ -6,16 +6,12 @@ class MainSection extends StatelessWidget {
   const MainSection(
       {Key? key,
       required GlobalKey<FormState> parameterFormKey,
-      required this.parameterList,
-      required this.response,
-      required this.onPressed})
+      required this.response})
       : _parameterFormKey = parameterFormKey,
         super(key: key);
 
   final GlobalKey<FormState> _parameterFormKey;
-  final ValueNotifier<List> parameterList;
   final response;
-  final onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +22,7 @@ class MainSection extends StatelessWidget {
           Flexible(
             flex: 4,
             fit: FlexFit.tight,
-            child: InputPane(
-                parameterFormKey: _parameterFormKey,
-                parameterList: parameterList,
-                onPressed: onPressed),
+            child: InputPane(parameterFormKey: _parameterFormKey),
           ),
           Flexible(
               flex: 6,

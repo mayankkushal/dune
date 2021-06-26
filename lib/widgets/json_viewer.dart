@@ -358,7 +358,7 @@ class _JsonArrayViewerState extends State<JsonArrayViewer> {
       }
     }
     return InkWell(
-        child: Text('{}'),
+        child: Text('{${content.keys.length}}'),
         onTap: () {
           setState(() {
             openFlag[index] = !(openFlag[index]);
