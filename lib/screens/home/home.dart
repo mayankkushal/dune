@@ -44,9 +44,12 @@ class Home extends HookWidget {
         child: Scaffold(
           body: Column(
             children: [
-              UrlSection(
-                urlInputController: urlInputController,
-                onSubmitPressed: fetchRequest,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                child: UrlSection(
+                  urlInputController: urlInputController,
+                  onSubmitPressed: fetchRequest,
+                ),
               ),
               MainSection(
                   parameterFormKey: _parameterFormKey, response: response)

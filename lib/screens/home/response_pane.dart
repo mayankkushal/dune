@@ -133,6 +133,8 @@ class ResponseTabBarContainer extends StatelessWidget {
         tabs: [
           TabBarItem("Body"),
           TabBarItem("Headers"),
+          TabBarItem("Cookies"),
+          TabBarItem("Details"),
         ],
         views: [
           BodyContainer(response: response),
@@ -140,6 +142,8 @@ class ResponseTabBarContainer extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: HeaderContainer(response: response),
           ),
+          Container(color: Colors.blue),
+          Container(color: Colors.green),
         ],
         onChange: (index) => print(index),
       ),

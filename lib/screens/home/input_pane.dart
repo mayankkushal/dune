@@ -42,13 +42,15 @@ class InputPane extends HookWidget {
             ),
             tabs: [
               TabBarItem("Query Params"),
+              TabBarItem("Auth"),
               TabBarItem("Headers"),
-              TabBarItem("Body"),
+              TabBarItem("Pre-request Script"),
             ],
             views: [
               QueryParameterInput(),
-              HeaderInput(),
               Container(color: Colors.blue),
+              HeaderInput(),
+              Container(color: Colors.green),
             ],
             onChange: (index) => print(index),
           ),
