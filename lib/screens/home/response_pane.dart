@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:glass/glass.dart';
-import 'package:postwoman/controllers/ResponseController.dart';
+import 'package:postwoman/controllers/response_controller.dart';
+import 'package:postwoman/models/circle_decoration.dart';
+import 'package:postwoman/screens/home/input_pane.dart';
 import 'package:postwoman/theme.dart';
 import 'package:postwoman/widgets/json_viewer.dart';
 import 'package:provider/provider.dart';
@@ -84,21 +87,115 @@ class ResponseSection extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(7)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-          child: response.value != null
-              ? SingleChildScrollView(
-                  child: JsonViewer(json.decode(response.value!.response.body)),
-                )
-              : Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image:
-                            AssetImage('assets/images/response_background.png'),
-                        fit: BoxFit.cover),
-                  ),
+        child: response.value != null
+            ? ResponseTabBarContainer(response: response)
+            : Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  image: DecorationImage(
+                      image:
+                          AssetImage('assets/images/response_background.png'),
+                      fit: BoxFit.cover),
                 ),
+              ),
+      ),
+    );
+  }
+}
+
+class ResponseTabBarContainer extends StatelessWidget {
+  const ResponseTabBarContainer({
+    Key? key,
+    required this.response,
+  }) : super(key: key);
+
+  final response;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ContainedTabBarView(
+        tabBarProperties: TabBarProperties(
+          alignment: TabBarAlignment.start,
+          padding: EdgeInsets.only(bottom: 3),
+          indicator: CircleTabIndicator(color: AppColors.yellow, radius: 4.0),
+          labelColor: AppColors.yellow,
+          unselectedLabelColor: Colors.white,
+          background: Container(
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.white)),
+            ),
+          ),
         ),
+        tabBarViewProperties: TabBarViewProperties(
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        tabs: [
+          TabBarItem("Body"),
+          TabBarItem("Headers"),
+        ],
+        views: [
+          BodyContainer(response: response),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: HeaderContainer(response: response),
+          ),
+        ],
+        onChange: (index) => print(index),
+      ),
+    );
+  }
+}
+
+class BodyContainer extends StatelessWidget {
+  const BodyContainer({
+    Key? key,
+    required this.response,
+  }) : super(key: key);
+
+  final response;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: JsonViewer(json.decode(response.value!.response.body)),
+    );
+  }
+}
+
+class HeaderContainer extends StatelessWidget {
+  const HeaderContainer({Key? key, required this.response}) : super(key: key);
+
+  final response;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: SingleChildScrollView(
+        child: Table(border: TableBorder.all(color: Colors.white), children: [
+          ...response.value.response.headers.entries
+              .map((header) => TableRow(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 32,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(header.key),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        height: 32,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(header.value),
+                        ),
+                      ),
+                    ],
+                  ))
+              .toList()
+        ]),
       ),
     );
   }
@@ -131,7 +228,8 @@ class StatusSection extends StatelessWidget {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                      Text("Status: ${response.value!.response.statusCode}"),
+                      Text(
+                          "Status: ${response.value!.response.statusCode} ${response.value!.response.reasonPhrase}"),
                       Text(
                           "Time Elapsed: ${response.value!.stopwatch.elapsed.inMilliseconds}ms"),
                       Text(

@@ -5,7 +5,7 @@ import 'package:postwoman/theme.dart';
 
 class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;
-  JsonViewer(this.jsonObj);
+  const JsonViewer(this.jsonObj);
   @override
   _JsonViewerState createState() => _JsonViewerState();
 }
@@ -31,7 +31,7 @@ class JsonObjectViewer extends StatefulWidget {
   final Map<String, dynamic> jsonObj;
   final bool notRoot;
 
-  JsonObjectViewer(this.jsonObj, {this.notRoot: false});
+  const JsonObjectViewer(this.jsonObj, {this.notRoot: false});
 
   @override
   JsonObjectViewerState createState() => new JsonObjectViewerState();
@@ -227,7 +227,7 @@ class JsonArrayViewer extends StatefulWidget {
 
   final bool notRoot;
 
-  JsonArrayViewer(this.jsonArray, {this.notRoot: false});
+  const JsonArrayViewer(this.jsonArray, {this.notRoot: false});
 
   @override
   _JsonArrayViewerState createState() => new _JsonArrayViewerState();

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:postwoman/controllers/ResponseController.dart';
+import 'package:postwoman/controllers/response_controller.dart';
 import 'package:provider/provider.dart';
 
 class ParameterInput extends HookWidget {
-  const ParameterInput({Key? key}) : super(key: key);
+  const ParameterInput(this.inputType, {Key? key}) : super(key: key);
+
+  final inputType;
 
   @override
   Widget build(BuildContext context) {
@@ -23,41 +25,41 @@ class ParameterInput extends HookWidget {
           children: [
             Checkbox(
                 value: parameterInputController.getValue(
-                    ParameterInputType.query, this, 'isActive'),
+                    inputType, this, 'isActive'),
                 onChanged: (value) {
                   parameterInputController.updateValue(
-                      ParameterInputType.query, this, 'isActive', value);
+                      inputType, this, 'isActive', value);
                 }),
             Flexible(
               child: TextFormField(
                 decoration: InputDecoration(labelText: 'Key'),
-                initialValue: parameterInputController.getValue(
-                    ParameterInputType.query, this, 'key'),
+                initialValue:
+                    parameterInputController.getValue(inputType, this, 'key'),
                 onChanged: (value) {
                   parameterInputController.updateValue(
-                      ParameterInputType.query, this, 'key', value);
+                      inputType, this, 'key', value);
                   parameterInputController.updateValue(
-                      ParameterInputType.query, this, 'isActive', true);
+                      inputType, this, 'isActive', true);
                 },
               ),
             ),
             Flexible(
               child: TextFormField(
                 decoration: InputDecoration(labelText: 'Value'),
-                initialValue: parameterInputController.getValue(
-                    ParameterInputType.query, this, 'value'),
+                initialValue:
+                    parameterInputController.getValue(inputType, this, 'value'),
                 onChanged: (value) {
                   parameterInputController.updateValue(
-                      ParameterInputType.query, this, 'value', value);
+                      inputType, this, 'value', value);
                   parameterInputController.updateValue(
-                      ParameterInputType.query, this, 'isActive', true);
+                      inputType, this, 'isActive', true);
                 },
               ),
             ),
             Flexible(
               child: IconButton(
-                onPressed: () => parameterInputController.removeParameter(
-                    ParameterInputType.query, this),
+                onPressed: () =>
+                    parameterInputController.removeParameter(inputType, this),
                 icon: Icon(
                   Icons.delete_outline,
                 ),

@@ -50,20 +50,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  dropdown_plus:
-    dependency: "direct main"
-    description:
-      name: dropdown_plus
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.8"
-  dropdown_search:
-    dependency: "direct main"
-    description:
-      name: dropdown_search
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.3"
   ffi:
     dependency: transitive
     description:
@@ -223,13 +209,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.0"
-  search_choices:
-    dependency: "direct main"
-    description:
-      name: search_choices
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
   sky_engine:
     dependency: transitive
     description: flutter
