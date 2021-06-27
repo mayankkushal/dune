@@ -19,6 +19,8 @@ class InputPane extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    ReponseController responseController =
+        Provider.of<ReponseController>(context);
     return Form(
       key: _parameterFormKey,
       child: Padding(
@@ -26,6 +28,7 @@ class InputPane extends HookWidget {
         child: Container(
           child: ContainedTabBarView(
             tabBarProperties: TabBarProperties(
+              // isScrollable: true,
               padding: EdgeInsets.only(bottom: 3),
               indicator:
                   CircleTabIndicator(color: AppColors.yellow, radius: 4.0),
@@ -41,15 +44,17 @@ class InputPane extends HookWidget {
               physics: NeverScrollableScrollPhysics(),
             ),
             tabs: [
-              TabBarItem("Query Params"),
+              TabBarItem("Params"),
               TabBarItem("Auth"),
               TabBarItem("Headers"),
-              TabBarItem("Pre-request Script"),
+              TabBarItem("Body"),
+              TabBarItem("Scripts"),
             ],
             views: [
               QueryParameterInput(),
               Container(color: Colors.blue),
               HeaderInput(),
+              BodyInput(),
               Container(color: Colors.green),
             ],
             onChange: (index) => print(index),
@@ -69,10 +74,13 @@ class TabBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: double.infinity,
-        alignment: Alignment.center,
-        child: Text(text));
+    return Flexible(
+      child: Container(
+          height: double.infinity,
+          width: 100,
+          alignment: Alignment.center,
+          child: Text(text)),
+    );
   }
 }
 
@@ -80,7 +88,7 @@ class QueryParameterInput extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    ReponseController parameterInputController =
+    ReponseController responseController =
         Provider.of<ReponseController>(context);
 
     return Column(children: [
@@ -89,13 +97,13 @@ class QueryParameterInput extends HookWidget {
         fit: FlexFit.tight,
         child: ListView(
           controller: scrollController,
-          children: [...parameterInputController.queryParamMap.keys],
+          children: [...responseController.queryParamMap.keys],
         ),
       ),
       Flexible(
         child: IconButton(
           onPressed: () {
-            parameterInputController.addParameter(ParameterInputType.query);
+            responseController.addParameter(ParameterInputType.query);
             Timer(
                 Duration(milliseconds: 125),
                 () => scrollController
@@ -128,6 +136,57 @@ class HeaderInput extends HookWidget {
         child: IconButton(
           onPressed: () {
             responseController.addParameter(ParameterInputType.header);
+            Timer(
+                Duration(milliseconds: 125),
+                () => scrollController
+                    .jumpTo(scrollController.position.maxScrollExtent));
+          },
+          icon: Icon(Icons.add),
+        ),
+      )
+    ]);
+  }
+}
+
+class BodyInput extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+    ReponseController responseController =
+        Provider.of<ReponseController>(context);
+
+    return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Container(
+        alignment: Alignment.centerLeft,
+        child: DropdownButton<String>(
+          value: responseController.bodyType,
+          icon: const Icon(Icons.arrow_drop_down),
+          iconSize: 24,
+          elevation: 16,
+          onChanged: (String? newValue) {
+            responseController.updateBodyType(newValue);
+          },
+          items: <String>['application/json', "form-data"]
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
+      ),
+      Flexible(
+        flex: 8,
+        fit: FlexFit.tight,
+        child: ListView(
+          controller: scrollController,
+          children: [...responseController.bodyMap.keys],
+        ),
+      ),
+      Flexible(
+        child: IconButton(
+          onPressed: () {
+            responseController.addParameter(ParameterInputType.body);
             Timer(
                 Duration(milliseconds: 125),
                 () => scrollController

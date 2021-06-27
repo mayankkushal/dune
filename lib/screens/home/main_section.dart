@@ -3,15 +3,11 @@ import 'package:postwoman/screens/home/input_pane.dart';
 import 'package:postwoman/screens/home/response_pane.dart';
 
 class MainSection extends StatelessWidget {
-  const MainSection(
-      {Key? key,
-      required GlobalKey<FormState> parameterFormKey,
-      required this.response})
+  const MainSection({Key? key, required GlobalKey<FormState> parameterFormKey})
       : _parameterFormKey = parameterFormKey,
         super(key: key);
 
   final GlobalKey<FormState> _parameterFormKey;
-  final response;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +20,7 @@ class MainSection extends StatelessWidget {
             fit: FlexFit.tight,
             child: InputPane(parameterFormKey: _parameterFormKey),
           ),
-          Flexible(
-              flex: 6,
-              fit: FlexFit.tight,
-              child: ResponsePane(response: response)),
+          Flexible(flex: 6, fit: FlexFit.tight, child: ResponsePane()),
         ],
       ),
     );

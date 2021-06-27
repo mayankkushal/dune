@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:postwoman/controllers/response_controller.dart';
 import 'package:postwoman/theme.dart';
 import 'package:postwoman/widgets/dropdown.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 
 class UrlSection extends StatelessWidget {
   const UrlSection({
     Key? key,
-    required this.urlInputController,
     required this.onSubmitPressed,
   }) : super(key: key);
 
-  final TextEditingController urlInputController;
   final onSubmitPressed;
-  static var dropdownEditingController =
-      DropdownEditingController(value: METHODS[0]);
+
   @override
   Widget build(BuildContext context) {
+    ReponseController responseController =
+        Provider.of<ReponseController>(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -26,10 +27,11 @@ class UrlSection extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: DropdownFormField<Map<String, dynamic>>(
-              controller: dropdownEditingController,
+              controller: responseController.methodDropDownController,
               onEmptyActionPressed: () async {},
-              decoration:
-                  InputDecoration(suffixIcon: Icon(Icons.arrow_drop_down)),
+              decoration: InputDecoration(
+                suffixIcon: Icon(Icons.arrow_drop_down),
+              ),
               onSaved: (dynamic str) {},
               dropdownHeight: 300,
               onChanged: (dynamic str) {},
@@ -54,7 +56,7 @@ class UrlSection extends StatelessWidget {
         Flexible(
           flex: 8,
           child: TextField(
-            controller: urlInputController,
+            controller: responseController.urlInputController,
           ),
         ),
         ElevatedButton(onPressed: onSubmitPressed, child: Text("Submit"))

@@ -12,15 +12,11 @@ import 'package:postwoman/widgets/json_viewer.dart';
 import 'package:provider/provider.dart';
 
 class ResponsePane extends StatelessWidget {
-  const ResponsePane({
-    Key? key,
-    required this.response,
-  }) : super(key: key);
+  const ResponsePane({Key? key}) : super(key: key);
 
-  final response;
   @override
   Widget build(BuildContext context) {
-    ReponseController parameterInputController =
+    ReponseController responseController =
         Provider.of<ReponseController>(context);
     return Container(
       child: Padding(
@@ -30,14 +26,14 @@ class ResponsePane extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                StatusSection(response: response),
+                StatusSection(),
                 Spacer(
                   flex: 1,
                 ),
-                ResponseSection(response: response),
+                ResponseSection(),
               ],
             ),
-            parameterInputController.isLoading ? ResponseLoader() : Container(),
+            responseController.isLoading ? ResponseLoader() : Container(),
           ],
         ),
       ),
@@ -71,15 +67,12 @@ class ResponseLoader extends StatelessWidget {
 }
 
 class ResponseSection extends StatelessWidget {
-  const ResponseSection({
-    Key? key,
-    required this.response,
-  }) : super(key: key);
-
-  final response;
+  const ResponseSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ReponseController responseController =
+        Provider.of<ReponseController>(context);
     return Flexible(
       flex: 90,
       fit: FlexFit.tight,
@@ -87,8 +80,8 @@ class ResponseSection extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(7)),
-        child: response.value != null
-            ? ResponseTabBarContainer(response: response)
+        child: responseController.response != null
+            ? ResponseTabBarContainer()
             : Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(7),
@@ -104,12 +97,7 @@ class ResponseSection extends StatelessWidget {
 }
 
 class ResponseTabBarContainer extends StatelessWidget {
-  const ResponseTabBarContainer({
-    Key? key,
-    required this.response,
-  }) : super(key: key);
-
-  final response;
+  const ResponseTabBarContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -137,10 +125,10 @@ class ResponseTabBarContainer extends StatelessWidget {
           TabBarItem("Details"),
         ],
         views: [
-          BodyContainer(response: response),
+          BodyContainer(),
           Padding(
             padding: const EdgeInsets.all(8),
-            child: HeaderContainer(response: response),
+            child: HeaderContainer(),
           ),
           Container(color: Colors.blue),
           Container(color: Colors.green),
@@ -152,32 +140,29 @@ class ResponseTabBarContainer extends StatelessWidget {
 }
 
 class BodyContainer extends StatelessWidget {
-  const BodyContainer({
-    Key? key,
-    required this.response,
-  }) : super(key: key);
-
-  final response;
+  const BodyContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ReponseController responseController =
+        Provider.of<ReponseController>(context);
     return SingleChildScrollView(
-      child: JsonViewer(json.decode(response.value!.response.body)),
+      child:
+          JsonViewer(json.decode(responseController.response!.response.body)),
     );
   }
 }
 
 class HeaderContainer extends StatelessWidget {
-  const HeaderContainer({Key? key, required this.response}) : super(key: key);
-
-  final response;
-
+  const HeaderContainer({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    ReponseController responseController =
+        Provider.of<ReponseController>(context);
     return Container(
       child: SingleChildScrollView(
         child: Table(border: TableBorder.all(color: Colors.white), children: [
-          ...response.value.response.headers.entries
+          ...responseController.response!.response.headers.entries
               .map((header) => TableRow(
                     children: <Widget>[
                       Container(
@@ -185,7 +170,7 @@ class HeaderContainer extends StatelessWidget {
                         height: 32,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(header.key),
+                          child: SelectableText(header.key),
                         ),
                       ),
                       Container(
@@ -193,7 +178,7 @@ class HeaderContainer extends StatelessWidget {
                         height: 32,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(header.value),
+                          child: SelectableText(header.value),
                         ),
                       ),
                     ],
@@ -206,12 +191,7 @@ class HeaderContainer extends StatelessWidget {
 }
 
 class StatusSection extends StatelessWidget {
-  const StatusSection({
-    Key? key,
-    required this.response,
-  }) : super(key: key);
-
-  final response;
+  const StatusSection({Key? key}) : super(key: key);
 
   String getSize(int length) {
     return (length / 1024).toStringAsFixed(2);
@@ -219,6 +199,8 @@ class StatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ReponseController responseController =
+        Provider.of<ReponseController>(context);
     return Flexible(
       flex: 9,
       fit: FlexFit.tight,
@@ -228,16 +210,16 @@ class StatusSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(7)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: (response.value != null)
+          child: (responseController.response != null)
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                       Text(
-                          "Status: ${response.value!.response.statusCode} ${response.value!.response.reasonPhrase}"),
+                          "Status: ${responseController.response!.response.statusCode} ${responseController.response!.response.reasonPhrase}"),
                       Text(
-                          "Time Elapsed: ${response.value!.stopwatch.elapsed.inMilliseconds}ms"),
+                          "Time Elapsed: ${responseController.response!.stopwatch.elapsed.inMilliseconds}ms"),
                       Text(
-                          "Size: ${getSize(response.value!.response.contentLength)}KB")
+                          "Size: ${getSize(responseController.response!.response.contentLength)}KB")
                     ])
               : Text('Response'),
         ),
