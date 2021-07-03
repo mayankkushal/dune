@@ -23,10 +23,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  code_text_field: ^1.0.1-1
   contained_tab_bar_view: ^0.8.0
   cupertino_icons: ^1.0.2
+  dio: ^4.0.0
   flutter_hooks: ^0.17.0
+  flutter_json_view: ^0.2.1
   flutter_spinkit: ^5.0.0
+  flutter_switch: ^0.3.2
   get: ^4.1.4
   get_storage: ^2.0.2
   glass: ^1.0.0+1

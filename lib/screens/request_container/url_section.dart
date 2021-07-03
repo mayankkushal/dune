@@ -9,10 +9,7 @@ import '../../constants.dart';
 class UrlSection extends StatelessWidget {
   const UrlSection({
     Key? key,
-    required this.onSubmitPressed,
   }) : super(key: key);
-
-  final onSubmitPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +56,8 @@ class UrlSection extends StatelessWidget {
             controller: responseController.urlInputController,
           ),
         ),
-        ElevatedButton(onPressed: onSubmitPressed, child: Text("Submit"))
+        ElevatedButton(
+            onPressed: responseController.fetchRequest, child: Text("Submit"))
       ],
     );
   }

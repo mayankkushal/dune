@@ -7,7 +7,6 @@ import 'theme.dart';
 
 class App extends StatelessWidget {
   final data = GetStorage();
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

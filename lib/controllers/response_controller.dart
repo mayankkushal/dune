@@ -1,5 +1,10 @@
+import 'dart:convert' as convert;
+
+import 'package:code_text_field/code_text_field.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_highlight/themes/monokai-sublime.dart';
+import 'package:highlight/languages/json.dart';
 import 'package:postwoman/constants.dart';
 import 'package:postwoman/models/extended_response.dart';
 import 'package:postwoman/screens/home/parameter_input.dart';
@@ -11,14 +16,28 @@ class ReponseController with ChangeNotifier {
   Map<Widget, Map<dynamic, dynamic>> queryParamMap = {};
   Map<Widget, Map<dynamic, dynamic>> headersMap = {};
   Map<Widget, Map<dynamic, dynamic>> bodyMap = {};
+
   String? bodyType = "application/json";
+  bool useRawBody = false;
+
   bool isLoading = false;
+
   ExtendedResponse? response;
+  var dio = Dio();
 
   // Controllers
+
+  // Controller to handle method types
   DropdownEditingController<Map<String, dynamic>> methodDropDownController =
       DropdownEditingController(value: METHODS[0]);
+  // Controller to handle url input
   TextEditingController urlInputController = TextEditingController();
+  // Controller to handel raw body input
+  CodeController rawBodyController = CodeController(
+    text: "{ \n\t\n}",
+    language: json,
+    theme: monokaiSublimeTheme,
+  );
 
   ReponseController() {
     addParameter(ParameterInputType.query, count: 4);
@@ -82,6 +101,11 @@ class ReponseController with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateRawBody(bool value) {
+    useRawBody = value;
+    notifyListeners();
+  }
+
   void loading() {
     isLoading = true;
     notifyListeners();
@@ -92,9 +116,9 @@ class ReponseController with ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic> getQueryParameters() {
-    var finalQuery = <String, dynamic>{};
-    for (var qp in queryParamMap.values) {
+  Map<String, dynamic> getParameterInputAsMap(ParameterInputType type) {
+    var finalQuery = <String, String>{};
+    for (var qp in getParameterMap(type).values) {
       if (qp['isActive'] == true) {
         finalQuery[qp['key']] = qp['value'];
       }
@@ -102,25 +126,31 @@ class ReponseController with ChangeNotifier {
     return finalQuery;
   }
 
-  Map<String, String> getHeaders() {
-    var finalQuery = <String, String>{};
-    for (var qp in headersMap.values) {
-      if (qp['isActive'] == true) {
-        finalQuery[qp['key']] = qp['value'];
-      }
+  Map<String, dynamic> getBody() {
+    if (useRawBody) {
+      print(convert.json.decode(rawBodyController.text));
+      return convert.json.decode(rawBodyController.text);
     }
-    return finalQuery;
+    return getParameterInputAsMap(ParameterInputType.body);
   }
 
   void fetchRequest() async {
     loading();
-    var client = http.Client();
-    String queryString = Uri(queryParameters: getQueryParameters()).query;
-    Map<String, String> headers = getHeaders();
     final stopwatch = Stopwatch()..start();
-    var res = await client.get(
-        Uri.parse("${urlInputController.text}?$queryString"),
-        headers: headers);
+    late var res;
+    try {
+      res = await dio.request(
+        urlInputController.text,
+        queryParameters: getParameterInputAsMap(ParameterInputType.query),
+        data: getBody(),
+        options: Options(
+            method: methodDropDownController.value!['name'],
+            headers: getParameterInputAsMap(ParameterInputType.header),
+            responseType: ResponseType.plain),
+      );
+    } on DioError catch (e) {
+      res = e.response;
+    }
     stopwatch..stop();
     response = ExtendedResponse(res, stopwatch);
     ready();
