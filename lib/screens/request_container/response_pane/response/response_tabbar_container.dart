@@ -1,7 +1,7 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:postwoman/screens/home/input_pane/input_pane.dart';
 import 'package:postwoman/widgets/circle_decoration.dart';
+import 'package:postwoman/widgets/tab_bar_item.dart';
 
 import '../../../../theme.dart';
 import 'body_container.dart';

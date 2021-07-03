@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:postwoman/controllers/response_controller.dart';
-import 'package:postwoman/screens/home/response_pane/response/response_tabbar_container.dart';
 import 'package:provider/provider.dart';
+
+import 'response_tabbar_container.dart';
 
 class ResponseSection extends StatelessWidget {
   const ResponseSection({Key? key}) : super(key: key);

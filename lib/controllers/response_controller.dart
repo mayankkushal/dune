@@ -7,7 +7,7 @@ import 'package:flutter_highlight/themes/monokai-sublime.dart';
 import 'package:highlight/languages/json.dart';
 import 'package:postwoman/constants.dart';
 import 'package:postwoman/models/extended_response.dart';
-import 'package:postwoman/screens/home/parameter_input.dart';
+import 'package:postwoman/screens/request_container/parameter_input.dart';
 import 'package:postwoman/widgets/dropdown.dart';
 
 enum ParameterInputType { query, header, body }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:postwoman/screens/home/input_pane/input_pane.dart';
-import 'package:postwoman/screens/home/response_pane/response_pane.dart';
 import 'package:postwoman/widgets/split.dart';
+
+import 'input_pane/input_pane.dart';
+import 'response_pane/response_pane.dart';
 
 class MainSection extends StatelessWidget {
   const MainSection({Key? key, required GlobalKey<FormState> parameterFormKey})

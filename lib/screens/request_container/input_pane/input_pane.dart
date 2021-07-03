@@ -1,12 +1,13 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:postwoman/screens/home/input_pane/body_input.dart';
-import 'package:postwoman/screens/home/input_pane/query_parameter_input.dart';
 import 'package:postwoman/theme.dart';
 import 'package:postwoman/widgets/circle_decoration.dart';
+import 'package:postwoman/widgets/tab_bar_item.dart';
 
+import 'body_input.dart';
 import 'header_input.dart';
+import 'query_parameter_input.dart';
 
 class InputPane extends HookWidget {
   final GlobalKey<FormState> _parameterFormKey;
@@ -59,25 +60,6 @@ class InputPane extends HookWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class TabBarItem extends StatelessWidget {
-  const TabBarItem(
-    this.text, {
-    Key? key,
-  }) : super(key: key);
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-          height: double.infinity,
-          width: 100,
-          alignment: Alignment.center,
-          child: Text(text)),
     );
   }
 }
