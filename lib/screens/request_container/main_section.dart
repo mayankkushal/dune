@@ -1,5 +1,5 @@
+import 'package:dune/widgets/split.dart';
 import 'package:flutter/material.dart';
-import 'package:postwoman/widgets/split.dart';
 
 import 'input_pane/input_pane.dart';
 import 'response_pane/response_pane.dart';

@@ -1,7 +1,7 @@
 library flutter_json_widget;
 
+import 'package:dune/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:postwoman/theme.dart';
 
 class JsonViewer extends StatefulWidget {
   final dynamic jsonObj;

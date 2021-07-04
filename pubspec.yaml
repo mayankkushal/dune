@@ -1,4 +1,4 @@
-name: postwoman
+name: dune
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -37,8 +37,9 @@ dependencies:
   http: ^0.13.3
   provider: ^5.0.0
 
-# dev_dependencies:
-#   flutter_test:
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

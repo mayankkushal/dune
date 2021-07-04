@@ -1,6 +1,6 @@
+import 'package:dune/widgets/main_tab_bar/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:postwoman/widgets/main_tab_bar/tab_bar.dart';
 
 import '../../controllers/main_tab_controller.dart';
 
