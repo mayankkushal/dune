@@ -32,6 +32,9 @@ class ReponseController with ChangeNotifier {
       DropdownEditingController(value: METHODS[0]);
   // Controller to handle url input
   TextEditingController urlInputController = TextEditingController();
+  // Controller to handle request name
+  TextEditingController nameInputController =
+      TextEditingController(text: "Request Name");
   // Controller to handel raw body input
   CodeController rawBodyController = CodeController(
     text: "{ \n\t\n}",
