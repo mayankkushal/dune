@@ -1,28 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:postwoman/controllers/response_controller.dart';
+import 'package:provider/provider.dart';
 
 import 'main_section.dart';
 import 'url_section.dart';
 
-class RequestContainer extends StatelessWidget {
+class RequestContainer extends StatefulWidget {
   const RequestContainer({
     Key? key,
-    required GlobalKey<FormState> parameterFormKey,
-  })  : _parameterFormKey = parameterFormKey,
-        super(key: key);
+  }) : super(key: key);
 
-  final GlobalKey<FormState> _parameterFormKey;
+  @override
+  _RequestContainerState createState() => _RequestContainerState();
+}
+
+class _RequestContainerState extends State<RequestContainer> {
+  GlobalKey<FormState> _parameterFormKey = GlobalKey<FormState>();
+  ReponseController reponseController = ReponseController();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-            child: UrlSection(),
-          ),
-          MainSection(parameterFormKey: _parameterFormKey)
-        ],
+    return ChangeNotifierProvider.value(
+      value: reponseController,
+      child: Container(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+              child: UrlSection(),
+            ),
+            MainSection(parameterFormKey: _parameterFormKey)
+          ],
+        ),
       ),
     );
   }
