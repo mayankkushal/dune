@@ -38,12 +38,15 @@ class _BodyContainerState extends State<BodyContainer>
     return Consumer<ReponseController>(
       builder: (context, responseController, _) {
         _codeController!.text = responseController.response!.body;
-        return SingleChildScrollView(
-          child: CodeField(
-              controller: _codeController!,
-              lineNumberStyle:
-                  LineNumberStyle(width: 60, textAlign: TextAlign.center),
-              background: AppColors.background),
+        return Scrollbar(
+          isAlwaysShown: true,
+          child: SingleChildScrollView(
+            child: CodeField(
+                controller: _codeController!,
+                lineNumberStyle:
+                    LineNumberStyle(width: 60, textAlign: TextAlign.center),
+                background: AppColors.background),
+          ),
         );
       },
     );

@@ -9,12 +9,10 @@ class TabBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-          height: double.infinity,
-          width: 100,
-          alignment: Alignment.center,
-          child: Text(text)),
-    );
+    return Container(
+        height: double.infinity,
+        width: 100,
+        alignment: Alignment.center,
+        child: Text(text));
   }
 }

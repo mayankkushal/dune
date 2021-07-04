@@ -16,9 +16,13 @@ class QueryParameterInput extends HookWidget {
       Flexible(
         flex: 9,
         fit: FlexFit.tight,
-        child: ListView(
+        child: Scrollbar(
+          isAlwaysShown: true,
           controller: scrollController,
-          children: [...responseController.queryParamMap.keys],
+          child: ListView(
+            controller: scrollController,
+            children: [...responseController.queryParamMap.keys],
+          ),
         ),
       ),
       Flexible(
