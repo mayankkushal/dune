@@ -23,15 +23,15 @@ class MainTabItem extends StatelessWidget {
     return Obx(() => Container(
           constraints: BoxConstraints(minWidth: 75),
           decoration: BoxDecoration(
-            color: AppColors.secondaryBackground.withOpacity(isCurrent ? 0 : 1),
-            border: isCurrent
-                ? Border(
-                    top: BorderSide(color: AppColors.yellow, width: 3),
-                    left: BorderSide(color: Colors.white),
-                    right: BorderSide(color: Colors.white),
-                    bottom: BorderSide.none)
-                : Border(bottom: BorderSide(color: Colors.white)),
-          ),
+              color:
+                  AppColors.secondaryBackground.withOpacity(isCurrent ? 0 : 1),
+              border: isCurrent
+                  ? Border(
+                      top: BorderSide(color: AppColors.yellow, width: 3),
+                      left: BorderSide(color: Colors.white),
+                      right: BorderSide(color: Colors.white),
+                      bottom: BorderSide.none)
+                  : Border(bottom: BorderSide(color: Colors.white))),
           child: InkWell(
             onTap: () => tabController.changePage(position),
             child: Padding(

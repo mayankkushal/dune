@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
                   onPageChanged: (index) =>
                       tabController.currentPage.value = index,
                   itemBuilder: (context, position) {
-                    return tabController.pages[position];
+                    return tabController.pages[position].page;
                   },
                 ),
               ),

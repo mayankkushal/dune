@@ -1,6 +1,18 @@
+import 'package:dune/controllers/response_controller.dart';
 import 'package:dune/screens/request_container/request_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+class Page {
+  ReponseController responseController = ReponseController();
+  late Widget page;
+
+  Page() {
+    page = ChangeNotifierProvider.value(
+        value: responseController, child: RequestContainer());
+  }
+}
 
 class MainTabController extends GetxController {
   final tabs = [].obs;
@@ -10,14 +22,17 @@ class MainTabController extends GetxController {
   final PageController pageController = PageController();
 
   void addPage() {
-    pages.add(RequestContainer());
+    pages.add(Page());
     pageController.jumpToPage(pages.length - 1);
     currentPage.value = pages.length - 1;
   }
 
   void removePage(int position) {
     pages.removeAt(position);
-    pageController.jumpToPage(pages.length - 1);
+    if (currentPage.value == position) {
+      currentPage.value = pages.length - 1;
+      pageController.jumpToPage(pages.length - 1);
+    }
   }
 
   void changePage(int position) {
