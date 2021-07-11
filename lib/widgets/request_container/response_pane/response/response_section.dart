@@ -9,8 +9,8 @@ class ResponseSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ReponseController responseController =
-        Provider.of<ReponseController>(context);
+    ResponseController responseController =
+        Provider.of<ResponseController>(context);
     return Flexible(
       flex: 90,
       fit: FlexFit.tight,

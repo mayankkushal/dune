@@ -9,8 +9,8 @@ class HeaderInput extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    ReponseController responseController =
-        Provider.of<ReponseController>(context);
+    ResponseController responseController =
+        Provider.of<ResponseController>(context);
 
     return Column(children: [
       Flexible(

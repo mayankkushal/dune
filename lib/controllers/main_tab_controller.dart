@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class Page {
-  ReponseController responseController = ReponseController();
+  ResponseController responseController = ResponseController();
   late Widget page;
   late String method;
 

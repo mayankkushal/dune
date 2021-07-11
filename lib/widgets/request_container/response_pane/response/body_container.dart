@@ -34,7 +34,7 @@ class _BodyContainerState extends State<BodyContainer>
 
   @override
   Widget build(BuildContext context) {
-    final response = context.select((ReponseController p) => p.response);
+    final response = context.select((ResponseController p) => p.response);
     _codeController!.text = response!.body;
     super.build(context);
     return RepaintBoundary(

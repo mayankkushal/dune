@@ -13,8 +13,8 @@ class UrlSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ReponseController responseController =
-        Provider.of<ReponseController>(context);
+    ResponseController responseController =
+        Provider.of<ResponseController>(context);
     return Column(
       children: [
         TextField(

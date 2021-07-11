@@ -12,7 +12,7 @@ import 'package:highlight/languages/json.dart';
 
 enum ParameterInputType { query, header, body }
 
-class ReponseController with ChangeNotifier {
+class ResponseController with ChangeNotifier {
   Map<Widget, Map<dynamic, dynamic>> queryParamMap = {};
   Map<Widget, Map<dynamic, dynamic>> headersMap = {};
   Map<Widget, Map<dynamic, dynamic>> bodyMap = {};
@@ -41,7 +41,7 @@ class ReponseController with ChangeNotifier {
     theme: monokaiSublimeTheme,
   );
 
-  ReponseController() {
+  ResponseController() {
     addParameter(ParameterInputType.query, count: 4);
     addParameter(ParameterInputType.header, count: 4);
     addParameter(ParameterInputType.body, count: 4);

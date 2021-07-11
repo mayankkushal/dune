@@ -11,8 +11,8 @@ class ParameterInput extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // final enabled = useState(true);
-    ReponseController parameterInputController =
-        Provider.of<ReponseController>(context);
+    ResponseController parameterInputController =
+        Provider.of<ResponseController>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(

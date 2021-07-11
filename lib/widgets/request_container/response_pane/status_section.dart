@@ -11,8 +11,8 @@ class StatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ReponseController responseController =
-        Provider.of<ReponseController>(context);
+    ResponseController responseController =
+        Provider.of<ResponseController>(context);
     return Flexible(
       flex: 9,
       fit: FlexFit.tight,

@@ -14,7 +14,7 @@ class _QueryParameterInputState extends State<QueryParameterInput> {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final responseController = context.watch<ReponseController>();
+    final responseController = context.watch<ResponseController>();
 
     return Column(children: [
       Flexible(
