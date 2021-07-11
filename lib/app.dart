@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import './routes.dart';
+import 'controllers/history_controller.dart';
 import 'theme.dart';
 
 class App extends StatelessWidget {
   final data = GetStorage();
+  HistoryController historyController = Get.put(HistoryController());
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

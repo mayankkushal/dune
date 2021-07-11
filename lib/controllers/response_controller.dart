@@ -3,6 +3,8 @@ import 'dart:convert' as convert;
 import 'package:code_text_field/code_text_field.dart';
 import 'package:dio/dio.dart';
 import 'package:dune/constants.dart';
+import 'package:dune/controllers/history_controller.dart';
+import 'package:dune/controllers/request_logger.dart';
 import 'package:dune/models/extended_response.dart';
 import 'package:dune/widgets/dropdown.dart';
 import 'package:dune/widgets/request_container/parameter_input.dart';
@@ -45,6 +47,10 @@ class ResponseController with ChangeNotifier {
     addParameter(ParameterInputType.query, count: 4);
     addParameter(ParameterInputType.header, count: 4);
     addParameter(ParameterInputType.body, count: 4);
+    dio.interceptors.add(
+      RequestLogger(
+          onAddHistory: HistoryController.to.addHistory, addHistory: true),
+    );
   }
 
   Map initialData = {
@@ -152,6 +158,8 @@ class ResponseController with ChangeNotifier {
       res = e.response;
     }
     stopwatch..stop();
+    // final exportedCollection = await PostmanDioLogger.export();
+    // print(exportedCollection);
     response = ExtendedResponse(res, stopwatch);
     ready();
   }

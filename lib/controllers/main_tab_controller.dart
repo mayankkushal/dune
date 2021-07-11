@@ -24,9 +24,15 @@ class MainTabController extends GetxController {
 
   final PageController pageController = PageController();
 
+  MainTabController() {
+    addPage();
+  }
+
   void addPage() {
     pages.add(Page());
-    pageController.jumpToPage(pages.length - 1);
+    if (pageController.hasClients) {
+      pageController.jumpToPage(pages.length - 1);
+    }
     currentPage.value = pages.length - 1;
   }
 
