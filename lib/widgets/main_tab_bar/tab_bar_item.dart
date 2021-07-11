@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import '../../controllers/main_tab_controller.dart';
 import '../../theme.dart';
 
+const MAX_TAB_TEXT_LENGTH = 16;
+
 class MainTabItem extends StatelessWidget {
   const MainTabItem(
       {Key? key, required this.tabController, required this.position})
@@ -21,7 +23,7 @@ class MainTabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Container(
-          constraints: BoxConstraints(minWidth: 75),
+          constraints: BoxConstraints(minWidth: 75, maxWidth: 175),
           decoration: BoxDecoration(
               color:
                   AppColors.secondaryBackground.withOpacity(isCurrent ? 0 : 1),
@@ -40,7 +42,11 @@ class MainTabItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("$tabMethod $tabName"),
+                  Text(
+                    "$tabMethod $tabName".length > MAX_TAB_TEXT_LENGTH
+                        ? '${"$tabMethod $tabName".substring(0, MAX_TAB_TEXT_LENGTH)}...'
+                        : "$tabMethod $tabName",
+                  ),
                   InkWell(
                     child: Icon(Icons.close_sharp, size: 15),
                     onTap: () => tabController.removePage(position),
