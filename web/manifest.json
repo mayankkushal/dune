@@ -1,6 +1,6 @@
 {
-    "name": "postwoman",
-    "short_name": "postwoman",
+    "name": "dune",
+    "short_name": "dune",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

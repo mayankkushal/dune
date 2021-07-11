@@ -10,6 +10,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: 'Dune',
       debugShowCheckedModeBanner: false,
       initialRoute: '/home',
       getPages: routes,
