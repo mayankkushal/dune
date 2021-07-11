@@ -36,6 +36,7 @@ dependencies:
   glass: ^1.0.0+1
   http: ^0.13.3
   provider: ^5.0.0
+  custom_rounded_rectangle_border: ^0.2.0-nullsafety.0
 
 dev_dependencies:
   flutter_test:

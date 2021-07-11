@@ -35,6 +35,8 @@ class MainTabController extends GetxController {
     if (currentPage.value == position) {
       currentPage.value = pages.length - 1;
       pageController.jumpToPage(pages.length - 1);
+    } else if (currentPage.value == pages.length) {
+      currentPage.value = pages.length - 1;
     }
   }
 
