@@ -11,8 +11,7 @@ class ResponsePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ReponseController responseController =
-        Provider.of<ReponseController>(context);
+    final isLoading = context.select((ReponseController p) => p.isLoading);
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -28,7 +27,7 @@ class ResponsePane extends StatelessWidget {
                 ResponseSection(),
               ],
             ),
-            responseController.isLoading ? ResponseLoader() : Container(),
+            isLoading ? ResponseLoader() : Container(),
           ],
         ),
       ),

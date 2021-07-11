@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 
-class QueryParameterInput extends HookWidget {
+class QueryParameterInput extends StatefulHookWidget {
+  @override
+  _QueryParameterInputState createState() => _QueryParameterInputState();
+}
+
+class _QueryParameterInputState extends State<QueryParameterInput> {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    ReponseController responseController =
-        Provider.of<ReponseController>(context);
+    final responseController = context.watch<ReponseController>();
 
     return Column(children: [
       Flexible(

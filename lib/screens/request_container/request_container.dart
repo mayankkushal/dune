@@ -19,7 +19,6 @@ class RequestContainer extends StatefulHookWidget {
 
 class _RequestContainerState extends State<RequestContainer>
     with AutomaticKeepAliveClientMixin {
-  GlobalKey<FormState> _parameterFormKey = GlobalKey<FormState>();
   ReponseController reponseController = ReponseController();
 
   @override
@@ -37,7 +36,7 @@ class _RequestContainerState extends State<RequestContainer>
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: UrlSection(),
             ),
-            MainSection(parameterFormKey: _parameterFormKey)
+            MainSection()
           ],
         ),
       ),

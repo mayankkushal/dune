@@ -131,7 +131,6 @@ class ReponseController with ChangeNotifier {
 
   Map<String, dynamic> getBody() {
     if (useRawBody) {
-      print(convert.json.decode(rawBodyController.text));
       return convert.json.decode(rawBodyController.text);
     }
     return getParameterInputAsMap(ParameterInputType.body);

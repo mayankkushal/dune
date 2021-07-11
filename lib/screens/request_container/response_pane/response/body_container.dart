@@ -34,21 +34,21 @@ class _BodyContainerState extends State<BodyContainer>
 
   @override
   Widget build(BuildContext context) {
+    final response = context.select((ReponseController p) => p.response);
+    _codeController!.text = response!.body;
     super.build(context);
-    return Consumer<ReponseController>(
-      builder: (context, responseController, _) {
-        _codeController!.text = responseController.response!.body;
-        return Scrollbar(
-          isAlwaysShown: true,
-          child: SingleChildScrollView(
-            child: CodeField(
-                controller: _codeController!,
-                lineNumberStyle:
-                    LineNumberStyle(width: 60, textAlign: TextAlign.center),
-                background: AppColors.background),
-          ),
-        );
-      },
+    return RepaintBoundary(
+      child: Scrollbar(
+        isAlwaysShown: true,
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: CodeField(
+              controller: _codeController!,
+              lineNumberStyle:
+                  LineNumberStyle(width: 60, textAlign: TextAlign.center),
+              background: AppColors.background),
+        ),
+      ),
     );
   }
 }
