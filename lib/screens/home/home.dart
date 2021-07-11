@@ -4,11 +4,6 @@ import 'package:get/get.dart';
 
 import '../../controllers/main_tab_controller.dart';
 
-class PageModel {
-  const PageModel({this.page});
-  final page;
-}
-
 class Home extends StatelessWidget {
   MainTabController tabController = Get.put(MainTabController());
   @override

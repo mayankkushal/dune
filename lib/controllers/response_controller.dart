@@ -26,7 +26,6 @@ class ReponseController with ChangeNotifier {
   var dio = Dio();
 
   // Controllers
-
   // Controller to handle method types
   DropdownEditingController<Map<String, dynamic>> methodDropDownController =
       DropdownEditingController(value: METHODS[0]);
@@ -35,7 +34,7 @@ class ReponseController with ChangeNotifier {
   // Controller to handle request name
   TextEditingController nameInputController =
       TextEditingController(text: "Request Name");
-  // Controller to handel raw body input
+  // Controller to handle raw body input
   CodeController rawBodyController = CodeController(
     text: "{ \n\t\n}",
     language: json,
@@ -95,7 +94,6 @@ class ReponseController with ChangeNotifier {
   }
 
   dynamic getValue(ParameterInputType type, Widget input, String key) {
-    // return true;
     return getParameterMap(type)[input]![key];
   }
 

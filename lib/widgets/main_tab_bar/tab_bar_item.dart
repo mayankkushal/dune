@@ -15,15 +15,13 @@ class MainTabItem extends StatelessWidget {
   final int position;
 
   bool get isCurrent => tabController.currentPage.value == position;
-  String get tabMethod => tabController.pages[position].responseController
-      .methodDropDownController.value['name'];
-  String get tabName =>
-      tabController.pages[position].responseController.nameInputController.text;
+  String get tabMethod => tabController.pages[position].method;
+  String get tabName => tabController.pages[position].name;
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Container(
-          constraints: BoxConstraints(minWidth: 75, maxWidth: 175),
+          constraints: BoxConstraints(minWidth: 75, maxWidth: 180),
           decoration: BoxDecoration(
               color:
                   AppColors.secondaryBackground.withOpacity(isCurrent ? 0 : 1),
@@ -31,8 +29,7 @@ class MainTabItem extends StatelessWidget {
                   ? Border(
                       top: BorderSide(color: AppColors.yellow, width: 3),
                       left: BorderSide(color: Colors.white),
-                      right: BorderSide(color: Colors.white),
-                      bottom: BorderSide.none)
+                      right: BorderSide(color: Colors.white))
                   : Border(bottom: BorderSide(color: Colors.white))),
           child: InkWell(
             onTap: () => tabController.changePage(position),
