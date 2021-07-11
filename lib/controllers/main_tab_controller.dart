@@ -7,15 +7,15 @@ import 'package:provider/provider.dart';
 class Page {
   ResponseController responseController = ResponseController();
   late Widget page;
-  late String method;
 
   Page() {
     page = ChangeNotifierProvider.value(
         value: responseController, child: RequestContainer());
-    method = responseController.methodDropDownController.value!['name'];
   }
 
   String get name => responseController.nameInputController.text;
+  String get method =>
+      responseController.methodDropDownController.value!['name'];
 }
 
 class MainTabController extends GetxController {
