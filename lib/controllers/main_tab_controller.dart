@@ -1,5 +1,5 @@
 import 'package:dune/controllers/response_controller.dart';
-import 'package:dune/screens/request_container/request_container.dart';
+import 'package:dune/widgets/request_container/request_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
