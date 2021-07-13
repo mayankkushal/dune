@@ -32,11 +32,11 @@ class MainTabItem extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(TAB_RADIUS),
                         topRight: Radius.circular(TAB_RADIUS)),
-                    leftSide: BorderSide(color: Colors.white),
-                    topLeftCornerSide: BorderSide(color: Colors.white),
-                    topRightCornerSide: BorderSide(color: Colors.white),
-                    rightSide: BorderSide(color: Colors.white),
-                    topSide: BorderSide(color: Colors.white),
+                    leftSide: BorderSide(color: AppColors.yellow),
+                    topLeftCornerSide: BorderSide(color: AppColors.yellow),
+                    topRightCornerSide: BorderSide(color: AppColors.yellow),
+                    rightSide: BorderSide(color: AppColors.yellow),
+                    topSide: BorderSide(color: AppColors.yellow),
                   ))
                 : BoxDecoration(
                     color: AppColors.secondaryBackground.withOpacity(1),

@@ -38,6 +38,11 @@ dependencies:
   http: ^0.13.3
   postman_dio: ^1.0.2
   provider: ^5.0.0
+  window_size:
+    git:
+      url: git://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
+      ref: 4b4f7439b8f5bcd68e110c65732e7dd0742da2c8
 
 dev_dependencies:
   flutter_test:

@@ -373,6 +373,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.1"
+  window_size:
+    dependency: "direct main"
+    description:
+      path: "plugins/window_size"
+      ref: "4b4f7439b8f5bcd68e110c65732e7dd0742da2c8"
+      resolved-ref: "4b4f7439b8f5bcd68e110c65732e7dd0742da2c8"
+      url: "git://github.com/google/flutter-desktop-embedding.git"
+    source: git
+    version: "0.1.0"
   xdg_directories:
     dependency: transitive
     description:
