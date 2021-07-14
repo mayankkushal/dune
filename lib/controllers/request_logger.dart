@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:dune/schema/Item.dart';
+import 'package:dune/schema/collection.dart';
+import 'package:dune/schema/request_item.dart';
 import 'package:postman_dio/helpers.dart';
 import 'package:postman_dio/models.dart';
 
 class RequestLogger extends Interceptor {
   RequestLogger({
     this.logPrint = print,
-    this.onAddHistory = print,
+    this.onAddHistory,
     this.enablePrint = false,
     this.addHistory = false,
     this.maxMilliseconds,
@@ -13,10 +16,10 @@ class RequestLogger extends Interceptor {
 
   // ignore: use_setters_to_change_properties
   static void changeNameCollection(String name) {
-    postmanCollection.info!.name = name;
+    collection.info!.name = name;
   }
 
-  static PostmanCollection postmanCollection = PostmanCollection(
+  static Collection collection = Collection(
     info: InfoCollection(
         name: 'PostmanDioLogger ${DateTime.now().toUtc()}',
         schema:
@@ -35,17 +38,16 @@ class RequestLogger extends Interceptor {
   /// In flutter, you'd better use debugPrint.
   /// you can also write log in a file.
   void Function(Object object) logPrint;
-  void Function(Object object)? onAddHistory;
+  void Function(Object object, dynamic returnValue)? onAddHistory;
 
   // you can override this for change your log value
-  Future<String?>? getPrintValue(ItemPostmanRequest? request) =>
-      getPrintJson(request);
+  Future<String?>? getPrintValue(Item? request) => getPrintJson(request);
 
-  ItemPostmanRequest? newRequest;
+  Item? newRequest;
 
   /// JSON collection for import by the postman or another client
   static Future<String> export() async {
-    return postmanCollection.toJson();
+    return collection.toJson();
   }
 
   @override
@@ -53,11 +55,11 @@ class RequestLogger extends Interceptor {
       RequestOptions options, RequestInterceptorHandler? handler) async {
     try {
       stopwatch.start();
-      newRequest = ItemPostmanRequest(
+      newRequest = Item(
         name: options.safeUri?.toString(),
-        request: await RequestPostman.fromRequest(options),
+        request: await RequestItem.fromRequest(options),
       );
-      postmanCollection.item!.add(newRequest);
+      collection.item!.add(newRequest);
     } catch (error, stackTrace) {
       l.log('$error',
           name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
@@ -69,11 +71,11 @@ class RequestLogger extends Interceptor {
   Future<void> onError(DioError err, ErrorInterceptorHandler? handler) async {
     try {
       _checkTime();
-      newRequest ??= ItemPostmanRequest(
+      newRequest ??= Item(
         name: err.response?.requestOptions.path == null
             ? null
             : err.response?.requestOptions.uri.toString(),
-        request: await RequestPostman.fromRequest(err.response?.requestOptions),
+        request: await RequestItem.fromRequest(err.response?.requestOptions),
       );
       newRequest!
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest!.name}'
@@ -126,7 +128,7 @@ class RequestLogger extends Interceptor {
     stopwatch.stop();
     if (maxMilliseconds != null) {
       if (stopwatch.elapsedMilliseconds < maxMilliseconds!) {
-        postmanCollection.item!.remove(newRequest);
+        collection.item!.remove(newRequest);
       }
     }
   }
@@ -140,15 +142,15 @@ class RequestLogger extends Interceptor {
       }
       logPrint(await getPrintValue(newRequest) ?? '');
     } else if (addHistory) {
-      onAddHistory!(await getPrintValue(newRequest) ?? '');
+      onAddHistory!(await getPrintValue(newRequest) ?? '', newRequest);
     }
   }
 
-  Future<String?>? getPrintJson(ItemPostmanRequest? request) async {
+  Future<String?>? getPrintJson(Item? request) async {
     return request?.toJson();
   }
 
-  Future<String> getPrintSimple(ItemPostmanRequest? request) async {
+  Future<String> getPrintSimple(Item? request) async {
     return '${request?.request?.method}:${request?.response?.firstOrDefault?.code} ${request?.request?.url?.raw}';
   }
 }

@@ -1,8 +1,9 @@
 class ExtendedResponse {
   final response;
   final stopwatch;
+  final parsedResponse;
 
-  const ExtendedResponse(this.response, this.stopwatch);
+  const ExtendedResponse(this.response, this.stopwatch, this.parsedResponse);
 
   int get statusCode => response.statusCode;
 

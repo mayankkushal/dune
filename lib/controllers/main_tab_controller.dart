@@ -1,14 +1,16 @@
 import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/schema/Item.dart';
 import 'package:dune/widgets/request_container/request_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class Page {
-  ResponseController responseController = ResponseController();
+  late ResponseController responseController;
   late Widget page;
 
-  Page() {
+  Page(Item? data) {
+    responseController = ResponseController(data);
     page = ChangeNotifierProvider.value(
         value: responseController, child: RequestContainer());
   }
@@ -25,11 +27,14 @@ class MainTabController extends GetxController {
   final PageController pageController = PageController();
 
   MainTabController() {
-    addPage();
+    addPage(null);
   }
 
-  void addPage() {
-    pages.add(Page());
+  static MainTabController get to => Get.find();
+
+  void addPage(Item? data) {
+    print(data);
+    pages.add(Page(data));
     if (pageController.hasClients) {
       pageController.jumpToPage(pages.length - 1);
     }

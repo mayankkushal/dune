@@ -23,6 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  window_size:
+    git:
+      url: git://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
+      ref: 4b4f7439b8f5bcd68e110c65732e7dd0742da2c8
   code_text_field: ^1.0.1-1
   contained_tab_bar_view: ^0.8.0
   cupertino_icons: ^1.0.2
@@ -36,13 +41,9 @@ dependencies:
   get_storage: ^2.0.2
   glass: ^1.0.0+1
   http: ^0.13.3
+  intl: ^0.17.0
   postman_dio: ^1.0.2
   provider: ^5.0.0
-  window_size:
-    git:
-      url: git://github.com/google/flutter-desktop-embedding.git
-      path: plugins/window_size
-      ref: 4b4f7439b8f5bcd68e110c65732e7dd0742da2c8
 
 dev_dependencies:
   flutter_test:

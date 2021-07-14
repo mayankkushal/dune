@@ -16,7 +16,7 @@ class HistoryController extends GetxController {
 
   static HistoryController get to => Get.find();
 
-  void addHistory(object) async {
+  void addHistory(object, item) async {
     // var storageHistory = GetStorage().read('history');
     // print(storageHistory);
     var now = new DateTime.now();

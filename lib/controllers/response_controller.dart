@@ -6,6 +6,7 @@ import 'package:dune/constants.dart';
 import 'package:dune/controllers/history_controller.dart';
 import 'package:dune/controllers/request_logger.dart';
 import 'package:dune/models/extended_response.dart';
+import 'package:dune/schema/Item.dart';
 import 'package:dune/widgets/dropdown.dart';
 import 'package:dune/widgets/request_container/parameter_input.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_highlight/themes/monokai-sublime.dart';
 import 'package:highlight/languages/json.dart';
 
 enum ParameterInputType { query, header, body }
+const INITIAL_INPUT_COUNT = 4;
 
 class ResponseController with ChangeNotifier {
   Map<Widget, Map<dynamic, dynamic>> queryParamMap = {};
@@ -25,38 +27,85 @@ class ResponseController with ChangeNotifier {
   bool isLoading = false;
 
   ExtendedResponse? response;
+  Item? parsedResponse;
   var dio = Dio();
 
   // Controllers
   // Controller to handle method types
-  DropdownEditingController<Map<String, dynamic>> methodDropDownController =
-      DropdownEditingController(value: METHODS[0]);
+  late DropdownEditingController<Map<String, dynamic>> methodDropDownController;
+
   // Controller to handle url input
-  TextEditingController urlInputController = TextEditingController();
+  late TextEditingController urlInputController;
   // Controller to handle request name
   TextEditingController nameInputController =
       TextEditingController(text: "Request Name");
   // Controller to handle raw body input
-  CodeController rawBodyController = CodeController(
-    text: "{ \n\t\n}",
-    language: json,
-    theme: monokaiSublimeTheme,
-  );
+  late CodeController rawBodyController;
 
-  ResponseController() {
-    addParameter(ParameterInputType.query, count: 4);
-    addParameter(ParameterInputType.header, count: 4);
-    addParameter(ParameterInputType.body, count: 4);
+  ResponseController(Item? data) {
+    if (data != null) {
+      loadPageData(data);
+    } else {
+      initializeFreshPage();
+    }
     dio.interceptors.add(
       RequestLogger(
-          onAddHistory: HistoryController.to.addHistory, addHistory: true),
+          onAddHistory: (object, item) {
+            parsedResponse = item;
+            HistoryController.to.addHistory(object, item);
+          },
+          addHistory: true),
+    );
+    print(parsedResponse);
+  }
+
+  void loadPageData(Item data) {
+    methodDropDownController =
+        DropdownEditingController(value: {'name': data.request!.method});
+    loadUrl(data);
+    loadInputParam(ParameterInputType.query, data.request!.url!.query);
+    loadInputParam(ParameterInputType.header, data.request!.header);
+    loadBody(data);
+  }
+
+  void loadUrl(Item data) {
+    urlInputController =
+        TextEditingController(text: data.request!.url!.cleaned);
+  }
+
+  void loadBody(Item data) {
+    useRawBody = true;
+    rawBodyController = CodeController(
+      text: data.request!.body!.raw,
+      language: json,
+      theme: monokaiSublimeTheme,
     );
   }
 
+  void initializeFreshPage() {
+    methodDropDownController = DropdownEditingController(value: METHODS[0]);
+    urlInputController = TextEditingController();
+    addParameter(ParameterInputType.query, count: INITIAL_INPUT_COUNT);
+    addParameter(ParameterInputType.header, count: INITIAL_INPUT_COUNT);
+    addParameter(ParameterInputType.body, count: INITIAL_INPUT_COUNT);
+    rawBodyController = CodeController(
+      text: "{ \n\t\n}",
+      language: json,
+      theme: monokaiSublimeTheme,
+    );
+  }
+
+  void loadInputParam(ParameterInputType type, dynamic data) {
+    if (data.length > 0) {
+      data.forEach((input) => addParameter(type, data: input.toMap()));
+    }
+    addParameter(type, count: INITIAL_INPUT_COUNT - data.length);
+  }
+
   Map initialData = {
-    ParameterInputType.query: {'isActive': false, 'key': "", 'value': ""},
-    ParameterInputType.header: {'isActive': false, 'key': "", 'value': ""},
-    ParameterInputType.body: {'isActive': false, 'key': "", 'value': ""}
+    ParameterInputType.query: {'disabled': true, 'key': "", 'value': ""},
+    ParameterInputType.header: {'disabled': true, 'key': "", 'value': ""},
+    ParameterInputType.body: {'disabled': true, 'key': "", 'value': ""}
   };
 
   void removeParameterInput(
@@ -83,9 +132,12 @@ class ResponseController with ChangeNotifier {
     }
   }
 
-  void addParameter(ParameterInputType type, {count: 1}) {
+  void addParameter(ParameterInputType type, {count: 1, data}) {
+    if (data == null) {
+      data = initialData[type];
+    }
     for (var i = 0; i < count; i++) {
-      addParameterInput(type, getParameterMap(type), initialData[type]);
+      addParameterInput(type, getParameterMap(type), data);
     }
   }
 
@@ -126,7 +178,7 @@ class ResponseController with ChangeNotifier {
   Map<String, dynamic> getParameterInputAsMap(ParameterInputType type) {
     var finalQuery = <String, String>{};
     for (var qp in getParameterMap(type).values) {
-      if (qp['isActive'] == true) {
+      if (qp['disabled'] == false) {
         finalQuery[qp['key']] = qp['value'];
       }
     }
@@ -160,7 +212,7 @@ class ResponseController with ChangeNotifier {
     stopwatch..stop();
     // final exportedCollection = await PostmanDioLogger.export();
     // print(exportedCollection);
-    response = ExtendedResponse(res, stopwatch);
+    response = ExtendedResponse(res, stopwatch, parsedResponse);
     ready();
   }
 }

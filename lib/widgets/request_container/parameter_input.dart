@@ -24,11 +24,12 @@ class ParameterInput extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Checkbox(
-                value: parameterInputController.getValue(
-                    inputType, this, 'isActive'),
+                value: !parameterInputController.getValue(
+                    inputType, this, 'disabled'),
                 onChanged: (value) {
+                  value = value as bool;
                   parameterInputController.updateValue(
-                      inputType, this, 'isActive', value);
+                      inputType, this, 'disabled', !value);
                 }),
             Flexible(
               child: TextFormField(
@@ -39,7 +40,7 @@ class ParameterInput extends HookWidget {
                   parameterInputController.updateValue(
                       inputType, this, 'key', value);
                   parameterInputController.updateValue(
-                      inputType, this, 'isActive', true);
+                      inputType, this, 'disabled', false);
                 },
               ),
             ),
@@ -52,7 +53,7 @@ class ParameterInput extends HookWidget {
                   parameterInputController.updateValue(
                       inputType, this, 'value', value);
                   parameterInputController.updateValue(
-                      inputType, this, 'isActive', true);
+                      inputType, this, 'disabled', true);
                 },
               ),
             ),
