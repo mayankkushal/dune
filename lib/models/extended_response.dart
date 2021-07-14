@@ -1,19 +1,23 @@
+import 'package:dune/schema/Item.dart';
+
 class ExtendedResponse {
   final response;
   final stopwatch;
-  final parsedResponse;
+  final Item parsedResponse;
 
   const ExtendedResponse(this.response, this.stopwatch, this.parsedResponse);
 
-  int get statusCode => response.statusCode;
+  int get statusCode => parsedResponse.response![0].code as int;
 
-  String get statusMessage => response.statusMessage;
+  String get statusMessage => parsedResponse.response![0].status as String;
 
-  dynamic get body => response.data;
+  dynamic get body => parsedResponse.response![0].body as String;
 
-  dynamic get headers => response.headers.map;
+  dynamic get headers => parsedResponse.response![0].header;
+  dynamic get url => parsedResponse.request!.url!.raw;
+  int get responseTime => parsedResponse.response![0].responseTime as int;
 
   dynamic contentSize() {
-    return response.data.length / 1024;
+    return parsedResponse.response![0].body!.length / 1024;
   }
 }

@@ -76,7 +76,16 @@ class HistorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('History'),
+        Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(bottom: 8.0),
+          padding: EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.circular(10)),
+          child: Text('History'),
+        ),
         Expanded(
           child: Obx(
             () => historyController.history.keys.length > 0

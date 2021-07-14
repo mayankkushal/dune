@@ -1,7 +1,9 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:dune/controllers/response_controller.dart';
 import 'package:dune/widgets/circle_decoration.dart';
 import 'package:dune/widgets/tab_bar_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../theme.dart';
 import 'body_container.dart';
@@ -12,6 +14,7 @@ class ResponseTabBarContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final response = context.select((ResponseController r) => r.response);
     return Container(
       child: ContainedTabBarView(
         tabBarProperties: TabBarProperties(
@@ -42,7 +45,7 @@ class ResponseTabBarContainer extends StatelessWidget {
             child: HeaderContainer(),
           ),
           Container(color: Colors.blue),
-          Container(color: Colors.green),
+          Container(child: SelectableText("URL: ${response!.url}")),
         ],
         onChange: (index) => print(index),
       ),

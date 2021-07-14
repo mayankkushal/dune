@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dune/schema/Item.dart';
 import 'package:dune/schema/collection.dart';
 import 'package:dune/schema/request_item.dart';
+import 'package:dune/schema/response_item.dart';
 import 'package:postman_dio/helpers.dart';
 import 'package:postman_dio/models.dart';
 
@@ -21,7 +22,7 @@ class RequestLogger extends Interceptor {
 
   static Collection collection = Collection(
     info: InfoCollection(
-        name: 'PostmanDioLogger ${DateTime.now().toUtc()}',
+        name: 'RequestLogger ${DateTime.now().toUtc()}',
         schema:
             'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),
     item: [],
@@ -62,7 +63,7 @@ class RequestLogger extends Interceptor {
       collection.item!.add(newRequest);
     } catch (error, stackTrace) {
       l.log('$error',
-          name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
+          name: 'RequestLogger', error: error, stackTrace: stackTrace);
     }
     return handler?.next(options);
   }
@@ -85,7 +86,7 @@ class RequestLogger extends Interceptor {
       await _log();
     } catch (error, stackTrace) {
       l.log('$error',
-          name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
+          name: 'RequestLogger', error: error, stackTrace: stackTrace);
     }
     return handler?.next(err);
   }
@@ -100,13 +101,14 @@ class RequestLogger extends Interceptor {
         ..request = newRequest!.request?.copyWith(
           description: response.toString(),
         )
-        ..response = <ResponsePostman>[
-          ResponsePostman(
+        ..response = <ResponseItem>[
+          ResponseItem(
             name: response.requestOptions.safeUri?.toString(),
             code: response.statusCode,
             status: response.statusMessage,
             originalRequest:
-                await RequestPostman.fromRequest(response.requestOptions),
+                await RequestItem.fromRequest(response.requestOptions),
+            responseTime: stopwatch.elapsedMilliseconds,
             body: await TransformerJson.encode(response.data),
             header: response.headers.map.keys
                 .map((key) => HeaderPostman(
@@ -119,7 +121,7 @@ class RequestLogger extends Interceptor {
       await _log();
     } catch (error, stackTrace) {
       l.log('$error',
-          name: 'PostmanDioLogger', error: error, stackTrace: stackTrace);
+          name: 'RequestLogger', error: error, stackTrace: stackTrace);
     }
     return handler?.next(response);
   }

@@ -1,4 +1,5 @@
 import 'package:dune/schema/request_item.dart';
+import 'package:dune/schema/response_item.dart';
 import 'package:postman_dio/helpers.dart';
 import 'package:postman_dio/models.dart';
 
@@ -13,7 +14,7 @@ class Item {
   String? name;
   RequestItem? request;
   ProtocolProfileBehavior? protocolProfileBehavior;
-  List<ResponsePostman>? response;
+  List<ResponseItem>? response;
 
   Map<String, dynamic> toMap() {
     return {
@@ -34,9 +35,9 @@ class Item {
       request: RequestItem.fromMap(DartDynamic.asMap(map['request'])),
       protocolProfileBehavior: ProtocolProfileBehavior.fromMap(
           DartDynamic.asMap(map['protocolProfileBehavior'])),
-      response: List<ResponsePostman>.from(
+      response: List<ResponseItem>.from(
         DartDynamic.asList(map['response'])!
-            .map((e) => ResponsePostman.fromMap(DartDynamic.asMap(e))),
+            .map((e) => ResponseItem.fromMap(DartDynamic.asMap(e))),
       ),
     );
   }

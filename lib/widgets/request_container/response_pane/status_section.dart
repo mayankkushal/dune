@@ -11,8 +11,7 @@ class StatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponseController responseController =
-        Provider.of<ResponseController>(context);
+    final response = context.select((ResponseController r) => r.response);
     return Flexible(
       flex: 9,
       fit: FlexFit.tight,
@@ -22,16 +21,15 @@ class StatusSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(7)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: (responseController.response != null)
+          child: (response != null)
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                       Text(
-                          "Status: ${responseController.response!.statusCode} ${responseController.response!.statusMessage}"),
+                          "Status: ${response.statusCode} ${response.statusMessage}"),
+                      Text("Time Elapsed: ${response.responseTime}ms"),
                       Text(
-                          "Time Elapsed: ${responseController.response!.stopwatch.elapsed.inMilliseconds}ms"),
-                      Text(
-                          "Size: ${responseController.response!.contentSize().toStringAsFixed(2)}KB")
+                          "Size: ${response.contentSize().toStringAsFixed(2)}KB")
                     ])
               : Text('Response'),
         ),

@@ -65,7 +65,8 @@ class ResponseController with ChangeNotifier {
     loadUrl(data);
     loadInputParam(ParameterInputType.query, data.request!.url!.query);
     loadInputParam(ParameterInputType.header, data.request!.header);
-    loadBody(data);
+    loadRequestBody(data);
+    response = ExtendedResponse({}, Stopwatch(), data);
   }
 
   void loadUrl(Item data) {
@@ -73,7 +74,7 @@ class ResponseController with ChangeNotifier {
         TextEditingController(text: data.request!.url!.cleaned);
   }
 
-  void loadBody(Item data) {
+  void loadRequestBody(Item data) {
     useRawBody = true;
     rawBodyController = CodeController(
       text: data.request!.body!.raw,
@@ -212,7 +213,7 @@ class ResponseController with ChangeNotifier {
     stopwatch..stop();
     // final exportedCollection = await PostmanDioLogger.export();
     // print(exportedCollection);
-    response = ExtendedResponse(res, stopwatch, parsedResponse);
+    response = ExtendedResponse(res, stopwatch, parsedResponse as Item);
     ready();
   }
 }

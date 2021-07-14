@@ -11,7 +11,7 @@ class HeaderContainer extends StatelessWidget {
     return Container(
       child: SingleChildScrollView(
         child: Table(border: TableBorder.all(color: Colors.white), children: [
-          ...responseController.response!.headers.entries
+          ...responseController.response!.headers
               .map((header) => TableRow(
                     children: <Widget>[
                       Container(
@@ -26,7 +26,7 @@ class HeaderContainer extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: SelectableText(header.value[0]),
+                          child: SelectableText(header.value),
                         ),
                       ),
                     ],

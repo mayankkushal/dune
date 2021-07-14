@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:code_text_field/code_text_field.dart';
 import 'package:dune/controllers/response_controller.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +37,7 @@ class _BodyContainerState extends State<BodyContainer>
   @override
   Widget build(BuildContext context) {
     final response = context.select((ResponseController p) => p.response);
-    _codeController!.text = response!.body;
+    _codeController!.text = jsonDecode(response!.body);
     super.build(context);
     return RepaintBoundary(
       child: Scrollbar(
