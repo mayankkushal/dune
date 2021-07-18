@@ -27,7 +27,7 @@ class SideBar extends HookWidget {
         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
         decoration: BoxDecoration(
-            color: AppColors.black,
+            color: AppColors.sideBarColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [BoxShadow(offset: Offset(1.5, 0), blurRadius: 3)]),
         child: Column(

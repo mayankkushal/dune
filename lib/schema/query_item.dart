@@ -24,7 +24,6 @@ class QueryItem {
   }
 
   Map<String, dynamic> toMap() {
-    print('came here?-----------');
     return {
       'key': key,
       'value': value,

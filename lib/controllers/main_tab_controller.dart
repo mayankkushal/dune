@@ -33,7 +33,6 @@ class MainTabController extends GetxController {
   static MainTabController get to => Get.find();
 
   void addPage(var data) {
-    print(data);
     pages.add(Page(data));
     if (pageController.hasClients) {
       pageController.jumpToPage(pages.length - 1);

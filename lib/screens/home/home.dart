@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         body: Split(
           initialFractions: [0.3, 0.7],
-          minSizes: [100.0, 850.0],
+          minSizes: [250.0, 850.0],
           children: [
             SideBar(),
             Column(

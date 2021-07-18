@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dune/controllers/history_controller.dart';
 import 'package:dune/controllers/main_tab_controller.dart';
-import 'package:dune/schema/item.dart';
+import 'package:dune/schema/Item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -43,7 +43,7 @@ class HistorySection extends StatelessWidget {
     String key = historyController.history.keys
         .elementAt(historyController.history.keys.length - 1 - index);
     var data = jsonDecode(historyController.history[key]);
-    Item? item = Item.fromMap(data);
+    var item = Item.fromMap(data);
     DateTime date = DateTime.fromMicrosecondsSinceEpoch(int.parse(key));
     String finalDate = DateFormat("dd-MM-yyyy").format(date);
     String time = DateFormat.Hms().format(date);

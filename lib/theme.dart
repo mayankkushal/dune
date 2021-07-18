@@ -13,6 +13,7 @@ class AppColors {
   static const secondaryBackground = black;
   static const shadowColor = Color(0xff33404b);
   static const shadowColorOffset = Color(0xff455665);
+  static const sideBarColor = Color(0xff455665);
 }
 
 const TextStyle LinkTextStyle = TextStyle(
