@@ -6,8 +6,11 @@ class HistoryController extends GetxController {
 
   @override
   onInit() {
-    history.value = GetStorage().read('history');
     super.onInit();
+    var storageHistrory = GetStorage().read('history');
+    if (storageHistrory != null) {
+      history.value = GetStorage().read('history');
+    }
   }
 
   static HistoryController get to => Get.find();

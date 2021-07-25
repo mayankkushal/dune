@@ -148,8 +148,6 @@ class DropdownFormFieldState<T> extends State<DropdownFormField>
 
   @override
   Widget build(BuildContext context) {
-    // print("_overlayEntry : $_overlayEntry");
-
     _displayItem = widget.displayItemFn(_selectedItem);
 
     return CompositedTransformTarget(

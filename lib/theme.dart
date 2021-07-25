@@ -1,3 +1,4 @@
+import 'package:dune/constants.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -14,12 +15,16 @@ class AppColors {
   static const shadowColor = Color(0xff33404b);
   static const shadowColorOffset = Color(0xff455665);
   static const sideBarColor = Color(0xff455665);
+  static const green = Color(0xff76ff03);
+  static const orange = Color(0xffff9800);
 }
 
 const TextStyle LinkTextStyle = TextStyle(
   decoration: TextDecoration.underline,
   color: AppColors.yellow,
 );
+
+Map<String, Color> methodColor = {GET: AppColors.green, POST: AppColors.orange};
 
 class AppTheme {
   static ThemeData get dark {

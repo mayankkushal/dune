@@ -56,7 +56,6 @@ class ResponseController with ChangeNotifier {
           },
           addHistory: true),
     );
-    print(parsedResponse);
   }
 
   void loadPageData(Item data) {
@@ -211,8 +210,6 @@ class ResponseController with ChangeNotifier {
       res = e.response;
     }
     stopwatch..stop();
-    // final exportedCollection = await PostmanDioLogger.export();
-    // print(exportedCollection);
     response = ExtendedResponse(res, stopwatch, parsedResponse as Item);
     ready();
   }

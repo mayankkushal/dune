@@ -1,9 +1,8 @@
-import 'package:dune/controllers/env_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get/get.dart';
 
 import '../theme.dart';
+import 'env_section.dart';
 import 'history_section.dart';
 
 const HISTORY_POS = 0;
@@ -70,6 +69,7 @@ class SideBar extends HookWidget {
       Expanded(
         child: PageView(
           controller: _controller,
+          onPageChanged: (index) => activePage.value = index,
           children: [HistorySection(), EvironmentSection()],
         ),
       ),
@@ -77,40 +77,19 @@ class SideBar extends HookWidget {
   }
 }
 
-class EvironmentSection extends StatelessWidget {
-  EnvController envController = EnvController.to;
+class SidebarTitle extends StatelessWidget {
+  const SidebarTitle(this.title, {Key? key}) : super(key: key);
+  final title;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(bottom: 8.0),
-          padding: EdgeInsets.all(20.0),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          child: Text('Environment'),
-        ),
-        InkWell(
-          onTap: () => print('clicked'),
-          child: Text('Global'),
-        ),
-        Expanded(
-          child: Obx(() => envController.envs.length > 0
-              ? ListView.builder(
-                  controller: ScrollController(),
-                  itemCount: envController.envs.length,
-                  itemBuilder: itemBuilder,
-                  physics: ClampingScrollPhysics(),
-                )
-              : Text('Lets create History together')),
-        ),
-      ],
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.all(15.0),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      child: Text(title, style: Theme.of(context).textTheme.headline5),
     );
-  }
-
-  Widget itemBuilder(BuildContext context, int index) {
-    return Text('test');
   }
 }

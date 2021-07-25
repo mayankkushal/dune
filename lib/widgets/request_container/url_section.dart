@@ -1,3 +1,4 @@
+import 'package:dune/controllers/main_tab_controller.dart';
 import 'package:dune/controllers/response_controller.dart';
 import 'package:dune/theme.dart';
 import 'package:dune/widgets/dropdown.dart';
@@ -19,6 +20,7 @@ class UrlSection extends StatelessWidget {
       children: [
         TextField(
           controller: responseController.nameInputController,
+          onChanged: (_) => MainTabController.to.update(),
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,7 +38,9 @@ class UrlSection extends StatelessWidget {
                   ),
                   onSaved: (dynamic str) {},
                   dropdownHeight: 300,
-                  onChanged: (dynamic str) {},
+                  onChanged: (dynamic str) {
+                    MainTabController.to.update();
+                  },
                   validator: (dynamic str) {},
                   dropdownColor: AppColors.background,
                   displayItemFn: (dynamic item) => Text(

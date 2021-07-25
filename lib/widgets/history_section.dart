@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:dune/controllers/history_controller.dart';
 import 'package:dune/controllers/main_tab_controller.dart';
 import 'package:dune/schema/Item.dart';
+import 'package:dune/theme.dart';
+import 'package:dune/widgets/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,14 +17,7 @@ class HistorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(bottom: 8.0),
-          padding: EdgeInsets.all(15.0),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          child: Text('History', style: Theme.of(context).textTheme.headline5),
-        ),
+        SidebarTitle("History"),
         Expanded(
           child: Obx(
             () => historyController.history.keys.length > 0
@@ -53,7 +48,7 @@ class HistorySection extends StatelessWidget {
     }
     return ClipRect(
       child: InkWell(
-        onTap: () => tabController.addPage(item),
+        onTap: () => tabController.addRequestPage(item),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
           child: Row(
@@ -61,7 +56,10 @@ class HistorySection extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(method),
+                child: Text(
+                  method,
+                  style: TextStyle(color: methodColor[method]),
+                ),
               ),
               Text("$finalDate - $time")
             ],

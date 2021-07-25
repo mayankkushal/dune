@@ -53,7 +53,7 @@ class ParameterInput extends HookWidget {
                   parameterInputController.updateValue(
                       inputType, this, 'value', value);
                   parameterInputController.updateValue(
-                      inputType, this, 'disabled', true);
+                      inputType, this, 'disabled', false);
                 },
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:highlight/languages/json.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../theme.dart';
+import '../../../always_disabled_focus_node.dart';
 
 class BodyContainer extends StatefulWidget {
   const BodyContainer({Key? key}) : super(key: key);
@@ -46,6 +47,7 @@ class _BodyContainerState extends State<BodyContainer>
           physics: ClampingScrollPhysics(),
           child: CodeField(
               controller: _codeController!,
+              focusNode: AlwaysDisabledFocusNode(),
               lineNumberStyle:
                   LineNumberStyle(width: 60, textAlign: TextAlign.center),
               background: AppColors.background),

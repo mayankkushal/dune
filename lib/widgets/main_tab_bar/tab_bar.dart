@@ -22,7 +22,7 @@ class MainTabBar extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == tabController.pages.length)
               return IconButton(
-                  onPressed: () => tabController.addPage(null),
+                  onPressed: () => tabController.addRequestPage(null),
                   icon: Icon(Icons.add));
             return itemBuilder(context, index);
           },

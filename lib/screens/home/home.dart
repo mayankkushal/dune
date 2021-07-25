@@ -1,4 +1,4 @@
-import 'package:dune/controllers/env_controller.dart';
+import 'package:dune/controllers/main_env_controller.dart';
 import 'package:dune/widgets/main_tab_bar/tab_bar.dart';
 import 'package:dune/widgets/side_bar.dart';
 import 'package:dune/widgets/split.dart';
@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   final storage = GetStorage();
 
   MainTabController tabController = Get.put(MainTabController());
-  EnvController envController = Get.put(EnvController());
+  MainEnvController envController = Get.put(MainEnvController());
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +43,10 @@ class _HomeState extends State<Home> {
                     child: PageView.builder(
                       controller: tabController.pageController,
                       itemCount: tabController.pages.length,
-                      onPageChanged: (index) =>
-                          tabController.currentPage.value = index,
+                      onPageChanged: (index) {
+                        tabController.currentPage.value = index;
+                        tabController.update();
+                      },
                       itemBuilder: (context, position) {
                         return tabController.pages[position].page;
                       },
