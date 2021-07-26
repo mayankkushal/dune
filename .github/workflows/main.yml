@@ -122,15 +122,15 @@ jobs:
       working-directory: ${{ matrix.build_path }}
     - name: Compress build for Linux
       if: matrix.target == 'Linux'
-      run: tar czf $GITHUB_WORKSPACE/flutter_gallery_${{ matrix.target }}.tar.gz *
+      run: tar czf $GITHUB_WORKSPACE/dune_${{ matrix.target }}.tar.gz *
       working-directory: ${{ matrix.build_path }}
     - name: Compress build for macOS
       if: matrix.target == 'macOS'
-      run: ditto -c -k --sequesterRsrc --keepParent Flutter\ Gallery.app $GITHUB_WORKSPACE/flutter_gallery_${{ matrix.target }}.zip
+      run: ditto -c -k --sequesterRsrc --keepParent Flutter\ Gallery.app $GITHUB_WORKSPACE/dune_${{ matrix.target }}.zip
       working-directory: ${{ matrix.build_path }}
     - name: Compress build for Windows
       if: matrix.target == 'Windows'
-      run: compress-archive -Path * -DestinationPath ${env:GITHUB_WORKSPACE}\flutter_gallery_${{ matrix.target }}.zip
+      run: compress-archive -Path * -DestinationPath ${env:GITHUB_WORKSPACE}\dune_${{ matrix.target }}.zip
       working-directory: ${{ matrix.build_path }}
 
     # Upload the build.
@@ -141,6 +141,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.draft-release.outputs.upload_url }}
-        asset_path: ./flutter_gallery_${{ matrix.target }}${{ matrix.asset_extension }}
-        asset_name: flutter_gallery_${{ matrix.target }}${{ matrix.asset_extension }}
+        asset_path: ./dune_${{ matrix.target }}${{ matrix.asset_extension }}
+        asset_name: dune_${{ matrix.target }}${{ matrix.asset_extension }}
         asset_content_type: ${{ matrix.asset_content_type }}
