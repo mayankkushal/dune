@@ -49,7 +49,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Flutter Gallery ${{ github.ref }}
+        release_name: Dune ${{ github.ref }}
         body_path: CHANGELOG.md
         draft: true
         prerelease: false
@@ -126,7 +126,7 @@ jobs:
       working-directory: ${{ matrix.build_path }}
     - name: Compress build for macOS
       if: matrix.target == 'macOS'
-      run: ditto -c -k --sequesterRsrc --keepParent Flutter\ Gallery.app $GITHUB_WORKSPACE/dune_${{ matrix.target }}.zip
+      run: ditto -c -k --sequesterRsrc --keepParent Dune.app $GITHUB_WORKSPACE/dune_${{ matrix.target }}.zip
       working-directory: ${{ matrix.build_path }}
     - name: Compress build for Windows
       if: matrix.target == 'Windows'
