@@ -1,6 +1,6 @@
 import 'package:dune/controllers/response_controller.dart';
 import 'package:dune/models/environment.dart';
-import 'package:dune/schema/Item.dart';
+import 'package:dune/schema/item.dart';
 import 'package:dune/widgets/environment/env_container.dart';
 import 'package:dune/widgets/request_container/request_container.dart';
 import 'package:flutter/material.dart';

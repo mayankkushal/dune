@@ -1,4 +1,4 @@
-import 'package:dune/schema/Item.dart';
+import 'package:dune/schema/item.dart';
 
 class ExtendedResponse {
   final response;

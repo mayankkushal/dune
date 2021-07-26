@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dune/controllers/history_controller.dart';
 import 'package:dune/controllers/main_tab_controller.dart';
-import 'package:dune/schema/Item.dart';
+import 'package:dune/schema/item.dart';
 import 'package:dune/theme.dart';
 import 'package:dune/widgets/side_bar.dart';
 import 'package:flutter/material.dart';

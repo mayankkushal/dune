@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:dune/schema/Item.dart';
 import 'package:dune/schema/collection.dart';
+import 'package:dune/schema/item.dart';
 import 'package:dune/schema/request_item.dart';
 import 'package:dune/schema/response_item.dart';
 import 'package:postman_dio/helpers.dart';

@@ -6,7 +6,7 @@ import 'package:dune/constants.dart';
 import 'package:dune/controllers/history_controller.dart';
 import 'package:dune/controllers/request_logger.dart';
 import 'package:dune/models/extended_response.dart';
-import 'package:dune/schema/Item.dart';
+import 'package:dune/schema/item.dart';
 import 'package:dune/widgets/dropdown.dart';
 import 'package:dune/widgets/request_container/parameter_input.dart';
 import 'package:flutter/material.dart';

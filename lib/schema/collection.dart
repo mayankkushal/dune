@@ -1,4 +1,4 @@
-import 'package:dune/schema/Item.dart';
+import 'package:dune/schema/item.dart';
 import 'package:postman_dio/helpers.dart';
 import 'package:postman_dio/models.dart';
 
