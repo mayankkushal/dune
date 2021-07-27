@@ -16,13 +16,9 @@ class HeaderInput extends HookWidget {
       Flexible(
         flex: 9,
         fit: FlexFit.tight,
-        child: Scrollbar(
+        child: ListView(
           controller: scrollController,
-          isAlwaysShown: true,
-          child: ListView(
-            controller: scrollController,
-            children: [...responseController.headersMap.keys],
-          ),
+          children: [...responseController.headersMap.keys],
         ),
       ),
       Flexible(

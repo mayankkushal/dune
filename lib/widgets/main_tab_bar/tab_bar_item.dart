@@ -26,7 +26,7 @@ class MainTabItem extends StatelessWidget {
       builder: (_) => ClipRRect(
         borderRadius: BorderRadius.vertical(top: Radius.circular(TAB_RADIUS)),
         child: Container(
-          constraints: BoxConstraints(minWidth: 75, maxWidth: 180),
+          constraints: BoxConstraints(maxWidth: 180),
           decoration: isCurrent
               ? ShapeDecoration(
                   shape: CustomRoundedRectangleBorder(
@@ -43,7 +43,9 @@ class MainTabItem extends StatelessWidget {
                   color: AppColors.secondaryBackground.withOpacity(1),
                   border: Border(bottom: BorderSide(color: Colors.white))),
           child: InkWell(
-            onTap: () => tabController.changePage(position),
+            onTap: () {
+              tabController.changePage(position);
+            },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(

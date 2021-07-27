@@ -20,13 +20,9 @@ class _QueryParameterInputState extends State<QueryParameterInput> {
       Flexible(
         flex: 9,
         fit: FlexFit.tight,
-        child: Scrollbar(
-          isAlwaysShown: true,
+        child: ListView(
           controller: scrollController,
-          child: ListView(
-            controller: scrollController,
-            children: [...responseController.queryParamMap.keys],
-          ),
+          children: [...responseController.queryParamMap.keys],
         ),
       ),
       Flexible(

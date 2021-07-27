@@ -69,13 +69,9 @@ class BodyInput extends HookWidget {
             Flexible(
               flex: 8,
               fit: FlexFit.tight,
-              child: Scrollbar(
+              child: ListView(
                 controller: scrollController,
-                isAlwaysShown: true,
-                child: ListView(
-                  controller: scrollController,
-                  children: [...responseController.bodyMap.keys],
-                ),
+                children: [...responseController.bodyMap.keys],
               ),
             ),
             Flexible(

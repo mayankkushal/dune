@@ -27,7 +27,7 @@ class UrlSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-              flex: 1,
+              flex: 2,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownFormField<Map<String, dynamic>>(
@@ -61,7 +61,7 @@ class UrlSection extends StatelessWidget {
               ),
             ),
             Flexible(
-              flex: 8,
+              flex: 7,
               child: TextField(
                 controller: responseController.urlInputController,
               ),
