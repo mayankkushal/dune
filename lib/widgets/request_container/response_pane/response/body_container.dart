@@ -1,14 +1,9 @@
-import 'dart:convert';
-
 import 'package:dune/controllers/response_controller.dart';
 import 'package:dune/response_body_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../selectable_highlight_view.dart';
-
-// import '../../../../theme.dart';
-// import '../../../always_disabled_focus_node.dart';
 
 class BodyContainer extends StatefulWidget {
   const BodyContainer({Key? key}) : super(key: key);
@@ -28,7 +23,7 @@ class _BodyContainerState extends State<BodyContainer>
     super.build(context);
     return RepaintBoundary(
       child: SelectableHighlightView(
-        jsonDecode(response!.body),
+        response!.body,
         language: 'json',
         padding: EdgeInsets.all(12),
         theme: duneDarkTheme,

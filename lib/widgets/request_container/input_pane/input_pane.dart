@@ -1,6 +1,7 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:dune/theme.dart';
 import 'package:dune/widgets/circle_decoration.dart';
+import 'package:dune/widgets/request_container/input_pane/auth.dart';
 import 'package:dune/widgets/tab_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -40,14 +41,14 @@ class InputPane extends HookWidget {
             TabBarItem("Auth"),
             TabBarItem("Headers"),
             TabBarItem("Body"),
-            TabBarItem("Scripts"),
+            // TabBarItem("Scripts"),
           ],
           views: [
             QueryParameterInput(),
-            Container(color: Colors.blue),
+            AuthInput(),
             HeaderInput(),
             BodyInput(),
-            Container(color: Colors.green),
+            // Container(color: Colors.green),
           ],
           onChange: (index) => print(index),
         ),

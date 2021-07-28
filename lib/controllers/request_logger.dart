@@ -82,7 +82,23 @@ class RequestLogger extends Interceptor {
         ..name = '[${stopwatch.elapsedMilliseconds}ms] ${newRequest!.name}'
         ..request = newRequest!.request?.copyWith(
           description: err.toString(),
-        );
+        )
+        ..response = <ResponseItem>[
+          ResponseItem(
+            name: err.requestOptions.safeUri?.toString(),
+            code: err.response?.statusCode,
+            status: err.response?.statusMessage,
+            originalRequest: await RequestItem.fromRequest(err.requestOptions),
+            responseTime: stopwatch.elapsedMilliseconds,
+            body: await TransformerJson.encode(err.response?.data),
+            header: err.response?.headers.map.keys
+                .map((key) => HeaderPostman(
+                      key: key,
+                      value: err.response?.headers[key]?.toString(),
+                    ))
+                .toList(),
+          ),
+        ];
       await _log();
     } catch (error, stackTrace) {
       l.log('$error',

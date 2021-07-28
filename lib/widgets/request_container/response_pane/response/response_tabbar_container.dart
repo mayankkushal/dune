@@ -35,7 +35,7 @@ class ResponseTabBarContainer extends StatelessWidget {
         tabs: [
           TabBarItem("Body"),
           TabBarItem("Headers"),
-          TabBarItem("Cookies"),
+          // TabBarItem("Cookies"),
           TabBarItem("Details"),
         ],
         views: [
@@ -44,7 +44,7 @@ class ResponseTabBarContainer extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: HeaderContainer(),
           ),
-          Container(color: Colors.blue),
+          // Container(color: Colors.blue),
           Container(child: SelectableText("URL: ${response!.url}")),
         ],
         onChange: (index) => print(index),

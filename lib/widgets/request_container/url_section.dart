@@ -63,6 +63,7 @@ class UrlSection extends StatelessWidget {
             Flexible(
               flex: 7,
               child: TextField(
+                decoration: InputDecoration(labelText: 'Url'),
                 controller: responseController.urlInputController,
               ),
             ),

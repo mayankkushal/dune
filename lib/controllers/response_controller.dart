@@ -1,4 +1,5 @@
 import 'dart:convert' as convert;
+import 'dart:convert';
 
 import 'package:code_text_field/code_text_field.dart';
 import 'package:dio/dio.dart';
@@ -25,6 +26,11 @@ class ResponseController with ChangeNotifier {
   bool useRawBody = false;
 
   bool isLoading = false;
+
+  // auth
+  String? authType = AUTH_OPTIONS[NONE];
+  Map<String, String> basicAuth = {"username": "", "password": ""};
+  String bearerToken = "";
 
   ExtendedResponse? response;
   Item? parsedResponse;
@@ -145,6 +151,16 @@ class ResponseController with ChangeNotifier {
     removeParameterInput(getParameterMap(type), input);
   }
 
+  void updateBasicAuth(String key, String value) {
+    basicAuth[key] = value;
+    notifyListeners();
+  }
+
+  void updateBearerToken(String value) {
+    bearerToken = value;
+    notifyListeners();
+  }
+
   void updateValue(
       ParameterInputType type, Widget input, String key, dynamic value) {
     getParameterMap(type)[input]![key] = value;
@@ -157,6 +173,11 @@ class ResponseController with ChangeNotifier {
 
   void updateBodyType(String? value) {
     bodyType = value;
+    notifyListeners();
+  }
+
+  void updateAuthType(String? value) {
+    authType = value;
     notifyListeners();
   }
 
@@ -192,6 +213,18 @@ class ResponseController with ChangeNotifier {
     return getParameterInputAsMap(ParameterInputType.body);
   }
 
+  Map<String, dynamic> getHeaders() {
+    Map<String, dynamic> headers =
+        getParameterInputAsMap(ParameterInputType.header);
+    if (authType == AUTH_OPTIONS[BASIC]) {
+      headers['authorization'] =
+          "Basic ${base64Encode(utf8.encode('${basicAuth["username"]}:${basicAuth["password"]}'))}";
+    } else if (authType == AUTH_OPTIONS[BEARER_TOKEN]) {
+      headers['authorization'] = bearerToken;
+    }
+    return headers;
+  }
+
   void fetchRequest() async {
     loading();
     final stopwatch = Stopwatch()..start();
@@ -203,11 +236,15 @@ class ResponseController with ChangeNotifier {
         data: getBody(),
         options: Options(
             method: methodDropDownController.value!['name'],
-            headers: getParameterInputAsMap(ParameterInputType.header),
+            headers: getHeaders(),
             responseType: ResponseType.plain),
       );
-    } on DioError catch (e) {
-      res = e.response;
+    } catch (e) {
+      if (e is DioError) {
+        res = e.response;
+      } else {
+        res = {};
+      }
     }
     stopwatch..stop();
     response = ExtendedResponse(res, stopwatch, parsedResponse as Item);
