@@ -1,7 +1,10 @@
 name: Draft Github Release
 on:
   workflow_dispatch:
-    # Enable manual run
+    inputs:
+      version:
+        description: 'Define version'     
+        required: true
 
 jobs:
   generate-changelog:
@@ -44,8 +47,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Dune ${{ github.ref }}
+        tag_name: ${{ github.event.inputs.version }}
+        release_name: Dune ${{ github.event.inputs.version }}
         body_path: CHANGELOG.md
         draft: true
         prerelease: false
