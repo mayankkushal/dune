@@ -1,4 +1,4 @@
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,8 +6,8 @@ class HeaderContainer extends StatelessWidget {
   const HeaderContainer({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    ResponseController responseController =
-        Provider.of<ResponseController>(context);
+    RequestController responseController =
+        Provider.of<RequestController>(context);
     return Container(
       child: SingleChildScrollView(
         child: Table(border: TableBorder.all(color: Colors.white), children: [

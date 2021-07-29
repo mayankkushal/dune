@@ -1,4 +1,4 @@
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:dune/response_body_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class _BodyContainerState extends State<BodyContainer>
 
   @override
   Widget build(BuildContext context) {
-    final response = context.select((ResponseController p) => p.response);
+    final response = context.select((RequestController p) => p.response);
     super.build(context);
     return RepaintBoundary(
       child: SelectableHighlightView(

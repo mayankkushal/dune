@@ -1,5 +1,5 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:dune/widgets/circle_decoration.dart';
 import 'package:dune/widgets/tab_bar_item.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class ResponseTabBarContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final response = context.select((ResponseController r) => r.response);
+    final response = context.select((RequestController r) => r.response);
     return Container(
       child: ContainedTabBarView(
         tabBarProperties: TabBarProperties(

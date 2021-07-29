@@ -1,4 +1,4 @@
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +11,8 @@ class ParameterInput extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // final enabled = useState(true);
-    ResponseController parameterInputController =
-        Provider.of<ResponseController>(context);
+    RequestController parameterInputController =
+        Provider.of<RequestController>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(

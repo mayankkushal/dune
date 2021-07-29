@@ -1,5 +1,6 @@
 import 'package:custom_rounded_rectangle_border/custom_rounded_rectangle_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/main_tab_controller.dart';
@@ -8,7 +9,7 @@ import '../../theme.dart';
 const MAX_TAB_TEXT_LENGTH = 16;
 const TAB_RADIUS = 10.0;
 
-class MainTabItem extends StatelessWidget {
+class MainTabItem extends HookWidget {
   const MainTabItem(
       {Key? key, required this.tabController, required this.position})
       : super(key: key);
@@ -22,6 +23,7 @@ class MainTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showCloseButton = useState(false);
     return GetBuilder<MainTabController>(
       builder: (_) => ClipRRect(
         borderRadius: BorderRadius.vertical(top: Radius.circular(TAB_RADIUS)),
@@ -46,6 +48,9 @@ class MainTabItem extends StatelessWidget {
             onTap: () {
               tabController.changePage(position);
             },
+            onHover: (hovering) {
+              showCloseButton.value = hovering;
+            },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -57,10 +62,13 @@ class MainTabItem extends StatelessWidget {
                         ? '${"$tabMethod $tabName".substring(0, MAX_TAB_TEXT_LENGTH)}...'
                         : "$tabMethod $tabName",
                   ),
-                  InkWell(
-                    child: Icon(Icons.close_sharp, size: 15),
-                    onTap: () => tabController.removePage(position),
-                  ),
+                  (isCurrent || showCloseButton.value)
+                      ? InkWell(
+                          child: Icon(Icons.close_sharp, size: 15),
+                          hoverColor: AppColors.yellow,
+                          onTap: () => tabController.removePage(position),
+                        )
+                      : Container()
                 ],
               ),
             ),

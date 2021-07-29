@@ -1,5 +1,6 @@
 import 'package:dune/controllers/main_tab_controller.dart';
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
+import 'package:dune/controllers/url_controller.dart';
 import 'package:dune/theme.dart';
 import 'package:dune/widgets/dropdown.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +15,12 @@ class UrlSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponseController responseController =
-        Provider.of<ResponseController>(context);
+    final urlController = context.watch<UrlController>();
+    final responseController = context.read<RequestController>();
     return Column(
       children: [
         TextField(
-          controller: responseController.nameInputController,
+          controller: urlController.nameInputController,
           onChanged: (_) => MainTabController.to.update(),
         ),
         Row(
@@ -31,7 +32,7 @@ class UrlSection extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownFormField<Map<String, dynamic>>(
-                  controller: responseController.methodDropDownController,
+                  controller: urlController.methodDropDownController,
                   onEmptyActionPressed: () async {},
                   decoration: InputDecoration(
                     suffixIcon: Icon(Icons.arrow_drop_down),
@@ -63,8 +64,8 @@ class UrlSection extends StatelessWidget {
             Flexible(
               flex: 7,
               child: TextField(
-                decoration: InputDecoration(labelText: 'Url'),
-                controller: responseController.urlInputController,
+                decoration: InputDecoration(labelText: 'URL'),
+                controller: urlController.urlInputController,
               ),
             ),
             ElevatedButton(

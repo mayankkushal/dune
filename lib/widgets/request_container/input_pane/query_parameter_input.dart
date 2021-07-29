@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class _QueryParameterInputState extends State<QueryParameterInput> {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final responseController = context.watch<ResponseController>();
+    final responseController = context.watch<RequestController>();
 
     return Column(children: [
       Flexible(

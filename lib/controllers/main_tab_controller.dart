@@ -1,4 +1,5 @@
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
+import 'package:dune/controllers/url_controller.dart';
 import 'package:dune/models/environment.dart';
 import 'package:dune/schema/item.dart';
 import 'package:dune/widgets/environment/env_container.dart';
@@ -10,18 +11,22 @@ import 'package:provider/provider.dart';
 import 'env_controller.dart';
 
 class RequestPage {
-  late ResponseController responseController;
+  late RequestController responseController;
+  late UrlController urlController;
   late Widget page;
 
   RequestPage(Item? data) {
-    responseController = ResponseController(data);
+    urlController = UrlController(data);
+    responseController = RequestController(urlController, data);
     page = ChangeNotifierProvider.value(
-        value: responseController, child: RequestContainer());
+      value: urlController,
+      child: ChangeNotifierProvider.value(
+          value: responseController, child: RequestContainer()),
+    );
   }
 
-  String get name => responseController.nameInputController.text;
-  String get method =>
-      responseController.methodDropDownController.value!['name'];
+  String get name => urlController.nameInputController.text;
+  String get method => urlController.methodDropDownController.value!['name'];
 }
 
 class EnvironmentPage {

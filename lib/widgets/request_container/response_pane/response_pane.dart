@@ -1,4 +1,4 @@
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +11,7 @@ class ResponsePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.select((ResponseController p) => p.isLoading);
+    final isLoading = context.select((RequestController p) => p.isLoading);
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),

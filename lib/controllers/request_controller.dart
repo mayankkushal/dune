@@ -6,9 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:dune/constants.dart';
 import 'package:dune/controllers/history_controller.dart';
 import 'package:dune/controllers/request_logger.dart';
+import 'package:dune/controllers/url_controller.dart';
 import 'package:dune/models/extended_response.dart';
 import 'package:dune/schema/item.dart';
-import 'package:dune/widgets/dropdown.dart';
 import 'package:dune/widgets/request_container/parameter_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
@@ -17,7 +17,7 @@ import 'package:highlight/languages/json.dart';
 enum ParameterInputType { query, header, body }
 const INITIAL_INPUT_COUNT = 4;
 
-class ResponseController with ChangeNotifier {
+class RequestController with ChangeNotifier {
   Map<Widget, Map<dynamic, dynamic>> queryParamMap = {};
   Map<Widget, Map<dynamic, dynamic>> headersMap = {};
   Map<Widget, Map<dynamic, dynamic>> bodyMap = {};
@@ -30,30 +30,25 @@ class ResponseController with ChangeNotifier {
   // auth
   String? authType = AUTH_OPTIONS[NONE];
   Map<String, String> basicAuth = {"username": "", "password": ""};
-  String bearerToken = "";
+  Map<String, String> bearerToken = {"key": "Bearer", "token": ""};
 
   ExtendedResponse? response;
   Item? parsedResponse;
   var dio = Dio();
 
   // Controllers
-  // Controller to handle method types
-  late DropdownEditingController<Map<String, dynamic>> methodDropDownController;
-
-  // Controller to handle url input
-  late TextEditingController urlInputController;
-  // Controller to handle request name
-  TextEditingController nameInputController =
-      TextEditingController(text: "Request Name");
+  // URL Controller
+  late UrlController urlController;
   // Controller to handle raw body input
   late CodeController rawBodyController;
 
-  ResponseController(Item? data) {
+  RequestController(this.urlController, Item? data) {
     if (data != null) {
       loadPageData(data);
     } else {
       initializeFreshPage();
     }
+    // this.urlController = urlController;
     dio.interceptors.add(
       RequestLogger(
           onAddHistory: (object, item) {
@@ -65,18 +60,10 @@ class ResponseController with ChangeNotifier {
   }
 
   void loadPageData(Item data) {
-    methodDropDownController =
-        DropdownEditingController(value: {'name': data.request!.method});
-    loadUrl(data);
     loadInputParam(ParameterInputType.query, data.request!.url!.query);
     loadInputParam(ParameterInputType.header, data.request!.header);
     loadRequestBody(data);
     response = ExtendedResponse({}, Stopwatch(), data);
-  }
-
-  void loadUrl(Item data) {
-    urlInputController =
-        TextEditingController(text: data.request!.url!.cleaned);
   }
 
   void loadRequestBody(Item data) {
@@ -89,8 +76,6 @@ class ResponseController with ChangeNotifier {
   }
 
   void initializeFreshPage() {
-    methodDropDownController = DropdownEditingController(value: METHODS[0]);
-    urlInputController = TextEditingController();
     addParameter(ParameterInputType.query, count: INITIAL_INPUT_COUNT);
     addParameter(ParameterInputType.header, count: INITIAL_INPUT_COUNT);
     addParameter(ParameterInputType.body, count: INITIAL_INPUT_COUNT);
@@ -156,8 +141,8 @@ class ResponseController with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateBearerToken(String value) {
-    bearerToken = value;
+  void updateBearerToken(String key, String value) {
+    bearerToken[key] = value;
     notifyListeners();
   }
 
@@ -220,7 +205,8 @@ class ResponseController with ChangeNotifier {
       headers['authorization'] =
           "Basic ${base64Encode(utf8.encode('${basicAuth["username"]}:${basicAuth["password"]}'))}";
     } else if (authType == AUTH_OPTIONS[BEARER_TOKEN]) {
-      headers['authorization'] = bearerToken;
+      headers['authorization'] =
+          "${bearerToken['key']} ${bearerToken['token']}";
     }
     return headers;
   }
@@ -231,11 +217,11 @@ class ResponseController with ChangeNotifier {
     late var res;
     try {
       res = await dio.request(
-        urlInputController.text,
+        urlController.urlInputController.text,
         queryParameters: getParameterInputAsMap(ParameterInputType.query),
         data: getBody(),
         options: Options(
-            method: methodDropDownController.value!['name'],
+            method: urlController.methodDropDownController.value!['name'],
             headers: getHeaders(),
             responseType: ResponseType.plain),
       );

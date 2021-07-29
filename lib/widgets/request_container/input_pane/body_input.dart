@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:code_text_field/code_text_field.dart';
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -13,8 +13,8 @@ class BodyInput extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    ResponseController responseController =
-        Provider.of<ResponseController>(context);
+    RequestController responseController =
+        Provider.of<RequestController>(context);
 
     return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
       Row(

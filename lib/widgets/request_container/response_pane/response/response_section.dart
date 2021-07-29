@@ -1,4 +1,4 @@
-import 'package:dune/controllers/response_controller.dart';
+import 'package:dune/controllers/request_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +9,8 @@ class ResponseSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponseController responseController =
-        Provider.of<ResponseController>(context);
+    RequestController responseController =
+        Provider.of<RequestController>(context);
     return Flexible(
       flex: 90,
       fit: FlexFit.tight,
