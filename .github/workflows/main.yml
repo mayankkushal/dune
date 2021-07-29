@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Define env name'     
+        description: 'Define version'     
         required: true
 
 jobs:
