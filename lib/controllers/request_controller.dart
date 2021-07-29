@@ -7,6 +7,7 @@ import 'package:dune/constants.dart';
 import 'package:dune/controllers/history_controller.dart';
 import 'package:dune/controllers/request_logger.dart';
 import 'package:dune/controllers/url_controller.dart';
+import 'package:dune/extensions/string_apis.dart';
 import 'package:dune/models/extended_response.dart';
 import 'package:dune/schema/item.dart';
 import 'package:dune/widgets/request_container/parameter_input.dart';
@@ -70,6 +71,10 @@ class RequestController with ChangeNotifier {
     useRawBody = true;
     rawBodyController = CodeController(
       text: data.request!.body!.raw,
+      patternMap: {
+        ENV_REGEX:
+            TextStyle(fontWeight: FontWeight.bold, color: Colors.purpleAccent),
+      },
       language: json,
       theme: monokaiSublimeTheme,
     );
@@ -81,6 +86,10 @@ class RequestController with ChangeNotifier {
     addParameter(ParameterInputType.body, count: INITIAL_INPUT_COUNT);
     rawBodyController = CodeController(
       text: "{ \n\t\n}",
+      patternMap: {
+        ENV_REGEX:
+            TextStyle(fontWeight: FontWeight.bold, color: Colors.purpleAccent),
+      },
       language: json,
       theme: monokaiSublimeTheme,
     );
@@ -185,7 +194,11 @@ class RequestController with ChangeNotifier {
     var finalQuery = <String, String>{};
     for (var qp in getParameterMap(type).values) {
       if (qp['disabled'] == false) {
-        finalQuery[qp['key']] = qp['value'];
+        var value = qp['value'] as String;
+        value = value.parseEnv();
+        var key = qp['key'] as String;
+        key = key.parseEnv();
+        finalQuery[key] = value;
       }
     }
     return finalQuery;
@@ -217,7 +230,7 @@ class RequestController with ChangeNotifier {
     late var res;
     try {
       res = await dio.request(
-        urlController.urlInputController.text,
+        urlController.urlInputController.text.parseEnv(),
         queryParameters: getParameterInputAsMap(ParameterInputType.query),
         data: getBody(),
         options: Options(

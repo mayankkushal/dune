@@ -1,3 +1,4 @@
+import 'package:code_text_field/code_text_field.dart';
 import 'package:dune/controllers/main_tab_controller.dart';
 import 'package:dune/controllers/request_controller.dart';
 import 'package:dune/controllers/url_controller.dart';
@@ -63,10 +64,9 @@ class UrlSection extends StatelessWidget {
             ),
             Flexible(
               flex: 7,
-              child: TextField(
-                decoration: InputDecoration(labelText: 'URL'),
-                controller: urlController.urlInputController,
-              ),
+              child: CodeField(
+                  controller: urlController.urlInputController,
+                  background: AppColors.background),
             ),
             ElevatedButton(
                 onPressed: responseController.fetchRequest,

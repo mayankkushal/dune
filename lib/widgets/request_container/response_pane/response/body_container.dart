@@ -24,7 +24,7 @@ class _BodyContainerState extends State<BodyContainer>
     return RepaintBoundary(
       child: SelectableHighlightView(
         response!.body,
-        language: 'json',
+        language: response.language,
         padding: EdgeInsets.all(12),
         theme: duneDarkTheme,
       ),

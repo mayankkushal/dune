@@ -1,11 +1,14 @@
+import 'package:code_text_field/code_text_field.dart';
+import 'package:dune/extensions/string_apis.dart';
 import 'package:dune/schema/item.dart';
 import 'package:dune/widgets/dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_highlight/themes/monokai-sublime.dart';
 
 import '../constants.dart';
 
 class UrlController with ChangeNotifier {
-  late TextEditingController urlInputController = TextEditingController();
+  late CodeController urlInputController;
   TextEditingController nameInputController =
       TextEditingController(text: "Request Name");
   late DropdownEditingController<Map<String, dynamic>>
@@ -16,13 +19,26 @@ class UrlController with ChangeNotifier {
       loadData(data);
     } else {
       methodDropDownController = DropdownEditingController(value: METHODS[0]);
-      urlInputController = TextEditingController();
+      urlInputController = CodeController(
+        text: "",
+        patternMap: {
+          ENV_REGEX: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.purpleAccent),
+        },
+        theme: monokaiSublimeTheme,
+      );
     }
   }
   void loadData(Item data) {
     methodDropDownController =
         DropdownEditingController(value: {'name': data.request!.method});
-    urlInputController =
-        TextEditingController(text: data.request!.url!.cleaned);
+    urlInputController = CodeController(
+      text: data.request!.url!.cleaned,
+      patternMap: {
+        ENV_REGEX:
+            TextStyle(fontWeight: FontWeight.bold, color: Colors.purpleAccent),
+      },
+      theme: monokaiSublimeTheme,
+    );
   }
 }

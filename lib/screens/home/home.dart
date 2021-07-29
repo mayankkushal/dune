@@ -1,4 +1,5 @@
 import 'package:dune/controllers/main_env_controller.dart';
+import 'package:dune/theme.dart';
 import 'package:dune/widgets/main_tab_bar/tab_bar.dart';
 import 'package:dune/widgets/side_bar.dart';
 import 'package:dune/widgets/split.dart';
@@ -27,35 +28,63 @@ class _HomeState extends State<Home> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: Split(
-          initialFractions: [0.3, 0.7],
-          minSizes: [250.0, 850.0],
+        body: Column(
           children: [
-            SideBar(),
-            Column(
-              children: [
-                Flexible(
-                    flex: 7, child: MainTabBar(tabController: tabController)),
-                Obx(
-                  () => Flexible(
-                    flex: 93,
-                    fit: FlexFit.tight,
-                    child: PageView.builder(
-                      controller: tabController.pageController,
-                      itemCount: tabController.pages.length,
-                      onPageChanged: (index) {
-                        tabController.currentPage.value = index;
-                        tabController.update();
-                      },
-                      itemBuilder: (context, position) {
-                        return tabController.pages[position].page;
-                      },
-                    ),
+            MenuBar(),
+            Expanded(
+              child: Split(
+                initialFractions: [0.3, 0.7],
+                minSizes: [250.0, 850.0],
+                children: [
+                  SideBar(),
+                  Column(
+                    children: [
+                      Flexible(
+                          flex: 7,
+                          child: MainTabBar(tabController: tabController)),
+                      Obx(
+                        () => Flexible(
+                          flex: 93,
+                          fit: FlexFit.tight,
+                          child: PageView.builder(
+                            controller: tabController.pageController,
+                            itemCount: tabController.pages.length,
+                            onPageChanged: (index) {
+                              tabController.currentPage.value = index;
+                              tabController.update();
+                            },
+                            itemBuilder: (context, position) {
+                              return tabController.pages[position].page;
+                            },
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class MenuBar extends StatelessWidget {
+  const MenuBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PhysicalModel(
+      color: AppColors.secondaryBackground,
+      elevation: 5,
+      child: Container(
+        height: 50,
+        child: Row(
+          children: [Text("Settings")],
         ),
       ),
     );

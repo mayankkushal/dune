@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:dune/schema/item.dart';
 
+const VALID_LANGS = ['json', 'html'];
+
 class ExtendedResponse {
   final response;
   final stopwatch;
@@ -12,6 +14,19 @@ class ExtendedResponse {
   int? get statusCode => parsedResponse.response?[0].code ?? 0;
 
   String get statusMessage => parsedResponse.response?[0].status ?? "";
+
+  String get language {
+    var type = parsedResponse.response?[0].header
+        ?.firstWhere((element) => element?.key == 'content-type');
+    if (type != null) {
+      for (var lang in VALID_LANGS) {
+        if (type.value!.contains(lang)) {
+          return lang;
+        }
+      }
+    }
+    return 'json';
+  }
 
   dynamic get body {
     var original = parsedResponse.response?[0].body ?? "";

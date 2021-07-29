@@ -1,4 +1,5 @@
 import 'package:dune/models/environment.dart';
+import 'package:dune/models/environment_item.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:uuid/uuid.dart';
@@ -36,6 +37,17 @@ class MainEnvController extends GetxController {
     super.onClose();
   }
 
+  List<EnvironmentItem> getValidItems() {
+    List<EnvironmentItem> tempItems = List.from(global.items);
+    envs.forEach((env) {
+      if (!env.disabled) {
+        tempItems.addAll(env.items.where((i) => !i.disabled));
+        return;
+      }
+    });
+    return tempItems;
+  }
+
   void createEnvironment() {
     var env = Environment(
         uid: Uuid().v4(), name: "Environment ${envs.length + 1}", items: []);
@@ -44,7 +56,10 @@ class MainEnvController extends GetxController {
   }
 
   void deleteEnvironment(Environment item) {
+    var storage = GetStorage();
     envs.remove(item);
+    var serializedEnvs = envs.map((env) => env.toMap()).toList();
+    storage.write(ENV_LIST, serializedEnvs);
     update();
   }
 
