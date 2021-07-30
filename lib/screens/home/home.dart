@@ -28,9 +28,13 @@ class _HomeState extends State<Home> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(onPressed: () => {}, icon: Icon(Icons.settings))
+          ],
+        ),
         body: Column(
           children: [
-            MenuBar(),
             Expanded(
               child: Split(
                 initialFractions: [0.3, 0.7],

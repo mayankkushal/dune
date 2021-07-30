@@ -1,4 +1,3 @@
-import 'package:code_text_field/code_text_field.dart';
 import 'package:dune/controllers/main_tab_controller.dart';
 import 'package:dune/controllers/request_controller.dart';
 import 'package:dune/controllers/url_controller.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../custom_code_field.dart';
 
 class UrlSection extends StatelessWidget {
   const UrlSection({
@@ -64,8 +64,10 @@ class UrlSection extends StatelessWidget {
             ),
             Flexible(
               flex: 7,
-              child: CodeField(
+              child: CustomCodeField(
                   controller: urlController.urlInputController,
+                  showLineNumber: false,
+                  inputDecoration: InputDecoration(labelText: 'URL'),
                   background: AppColors.background),
             ),
             ElevatedButton(

@@ -1,5 +1,6 @@
 import 'package:code_text_field/code_text_field.dart';
 import 'package:dune/extensions/string_apis.dart';
+import 'package:dune/response_body_theme.dart';
 import 'package:dune/schema/item.dart';
 import 'package:dune/widgets/dropdown.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class UrlController with ChangeNotifier {
           ENV_REGEX: TextStyle(
               fontWeight: FontWeight.bold, color: Colors.purpleAccent),
         },
-        theme: monokaiSublimeTheme,
+        theme: duneDarkTheme,
       );
     }
   }

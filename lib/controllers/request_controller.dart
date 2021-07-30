@@ -194,10 +194,8 @@ class RequestController with ChangeNotifier {
     var finalQuery = <String, String>{};
     for (var qp in getParameterMap(type).values) {
       if (qp['disabled'] == false) {
-        var value = qp['value'] as String;
-        value = value.parseEnv();
-        var key = qp['key'] as String;
-        key = key.parseEnv();
+        var value = (qp['value'] as String).parseEnv();
+        var key = (qp['key'] as String).parseEnv();
         finalQuery[key] = value;
       }
     }
@@ -206,7 +204,7 @@ class RequestController with ChangeNotifier {
 
   Map<String, dynamic> getBody() {
     if (useRawBody) {
-      return convert.json.decode(rawBodyController.text);
+      return convert.json.decode(rawBodyController.text.parseEnv());
     }
     return getParameterInputAsMap(ParameterInputType.body);
   }
@@ -216,10 +214,10 @@ class RequestController with ChangeNotifier {
         getParameterInputAsMap(ParameterInputType.header);
     if (authType == AUTH_OPTIONS[BASIC]) {
       headers['authorization'] =
-          "Basic ${base64Encode(utf8.encode('${basicAuth["username"]}:${basicAuth["password"]}'))}";
+          "Basic ${base64Encode(utf8.encode('${(basicAuth["username"] as String).parseEnv()}:${(basicAuth["password"] as String).parseEnv()}'))}";
     } else if (authType == AUTH_OPTIONS[BEARER_TOKEN]) {
       headers['authorization'] =
-          "${bearerToken['key']} ${bearerToken['token']}";
+          "${(bearerToken['key'] as String).parseEnv()} ${(bearerToken['token'] as String).parseEnv()}";
     }
     return headers;
   }
