@@ -10,8 +10,7 @@ import '../constants.dart';
 
 class UrlController with ChangeNotifier {
   late CodeController urlInputController;
-  TextEditingController nameInputController =
-      TextEditingController(text: "Request Name");
+  late TextEditingController nameInputController;
   late DropdownEditingController<Map<String, dynamic>>
       methodDropDownController = DropdownEditingController(value: METHODS[0]);
 
@@ -20,6 +19,7 @@ class UrlController with ChangeNotifier {
       loadData(data);
     } else {
       methodDropDownController = DropdownEditingController(value: METHODS[0]);
+      nameInputController = TextEditingController(text: "Request Name");
       urlInputController = CodeController(
         text: "",
         patternMap: {
@@ -31,10 +31,11 @@ class UrlController with ChangeNotifier {
     }
   }
   void loadData(Item data) {
-    methodDropDownController =
-        DropdownEditingController(value: {'name': data.request!.method});
+    methodDropDownController = DropdownEditingController(
+        value: {'name': data.request?.method ?? METHODS[0]['name']});
+    nameInputController = TextEditingController(text: data.name);
     urlInputController = CodeController(
-      text: data.request!.url!.cleaned,
+      text: data.request?.url?.cleaned ?? "",
       patternMap: {
         ENV_REGEX:
             TextStyle(fontWeight: FontWeight.bold, color: Colors.purpleAccent),

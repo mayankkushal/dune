@@ -61,16 +61,18 @@ class RequestController with ChangeNotifier {
   }
 
   void loadPageData(Item data) {
-    loadInputParam(ParameterInputType.query, data.request!.url!.query);
-    loadInputParam(ParameterInputType.header, data.request!.header);
+    loadInputParam(ParameterInputType.query, data.request?.url?.query ?? "");
+    loadInputParam(ParameterInputType.header, data.request?.header ?? "");
     loadRequestBody(data);
-    response = ExtendedResponse({}, Stopwatch(), data);
+    if (data.request != null) {
+      response = ExtendedResponse({}, Stopwatch(), data);
+    }
   }
 
   void loadRequestBody(Item data) {
     useRawBody = true;
     rawBodyController = CodeController(
-      text: data.request!.body!.raw,
+      text: data.request?.body?.raw ?? "{\n\t\n}",
       patternMap: {
         ENV_REGEX:
             TextStyle(fontWeight: FontWeight.bold, color: Colors.purpleAccent),

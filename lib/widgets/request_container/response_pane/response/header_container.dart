@@ -10,13 +10,13 @@ class HeaderContainer extends StatelessWidget {
         Provider.of<RequestController>(context);
     return Container(
       child: SingleChildScrollView(
+        controller: ScrollController(),
         child: Table(border: TableBorder.all(color: Colors.white), children: [
           ...responseController.response!.headers
               .map((header) => TableRow(
                     children: <Widget>[
                       Container(
                         alignment: Alignment.centerLeft,
-                        height: 32,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SelectableText(header.key),

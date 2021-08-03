@@ -15,9 +15,14 @@ class RequestPage {
   late UrlController urlController;
   late Widget page;
 
-  RequestPage(Item? data) {
-    urlController = UrlController(data);
-    responseController = RequestController(urlController, data);
+  RequestPage(Item? data, {controller}) {
+    if (controller == null) {
+      urlController = UrlController(data);
+      responseController = RequestController(urlController, data);
+    } else {
+      urlController = controller.urlController;
+      responseController = controller;
+    }
     page = ChangeNotifierProvider.value(
       value: urlController,
       child: ChangeNotifierProvider.value(
@@ -62,8 +67,8 @@ class MainTabController extends GetxController {
     currentPage.value = pages.length - 1;
   }
 
-  void addRequestPage(var data) {
-    pages.add(RequestPage(data));
+  void addRequestPage(var data, {controller}) {
+    pages.add(RequestPage(data, controller: controller));
     addPage();
   }
 

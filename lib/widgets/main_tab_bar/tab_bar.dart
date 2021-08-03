@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
+import 'package:reorderables/reorderables.dart';
 
 import '../../controllers/main_tab_controller.dart';
 import 'tab_bar_item.dart';
@@ -19,25 +20,38 @@ class MainTabBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
+
+    void _onReorder(int oldIndex, int newIndex) {
+      var page = tabController.pages[oldIndex];
+      tabController.pages[oldIndex] = tabController.pages[newIndex];
+      tabController.pages[newIndex] = page;
+    }
+
     return Container(
       child: Obx(
         () => ScrollConfiguration(
           behavior: DragScrollBehavior(),
           child: ListView.builder(
+            // onReorder: _onReorder,
+            // buildDefaultDragHandles: false,
             scrollDirection: Axis.horizontal,
             controller: scrollController,
             itemCount: tabController.pages.length + 1,
             itemBuilder: (context, index) {
               if (index == tabController.pages.length)
-                return IconButton(
-                    onPressed: () {
-                      tabController.addRequestPage(null);
-                      Timer(
-                          Duration(milliseconds: 125),
-                          () => scrollController.jumpTo(
-                              scrollController.position.maxScrollExtent));
-                    },
-                    icon: Icon(Icons.add));
+                return ReorderableWidget(
+                  key: UniqueKey(),
+                  reorderable: false,
+                  child: IconButton(
+                      onPressed: () {
+                        tabController.addRequestPage(null);
+                        Timer(
+                            Duration(milliseconds: 125),
+                            () => scrollController.jumpTo(
+                                scrollController.position.maxScrollExtent));
+                      },
+                      icon: Icon(Icons.add)),
+                );
               return itemBuilder(context, index);
             },
           ),

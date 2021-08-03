@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dune/schema/collection.dart';
+import 'package:dune/schema/info.dart';
 import 'package:dune/schema/item.dart';
 import 'package:dune/schema/request_item.dart';
 import 'package:dune/schema/response_item.dart';
@@ -21,7 +22,7 @@ class RequestLogger extends Interceptor {
   }
 
   static Collection collection = Collection(
-    info: InfoCollection(
+    info: Info(
         name: 'RequestLogger ${DateTime.now().toUtc()}',
         schema:
             'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'),

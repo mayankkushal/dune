@@ -1,17 +1,19 @@
 import 'package:dune/schema/item.dart';
 import 'package:postman_dio/helpers.dart';
-import 'package:postman_dio/models.dart';
+
+import 'info.dart';
 
 class Collection {
   Collection({
-    this.item,
     this.info,
+    this.item,
   });
-  final InfoCollection? info;
-  final List<Item?>? item;
+
+  final Info? info;
+  final List<dynamic>? item;
 
   Collection copyWith({
-    InfoCollection? info,
+    Info? info,
     List<Item>? item,
   }) {
     return Collection(
@@ -33,7 +35,7 @@ class Collection {
     }
 
     return Collection(
-      info: InfoCollection.fromMap(DartDynamic.asMap(map['info'])),
+      info: Info.fromMap(DartDynamic.asMap(map['info'])),
       item: DartDynamic.asList(map['item'])
           ?.map((x) => Item.fromMap(DartDynamic.asMap<String, dynamic>(x)))
           .toList(),

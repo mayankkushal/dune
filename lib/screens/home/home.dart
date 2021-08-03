@@ -1,5 +1,6 @@
 import 'package:dune/controllers/main_env_controller.dart';
 import 'package:dune/theme.dart';
+import 'package:dune/widgets/collection_section.dart';
 import 'package:dune/widgets/main_tab_bar/tab_bar.dart';
 import 'package:dune/widgets/side_bar.dart';
 import 'package:dune/widgets/split.dart';
@@ -20,6 +21,7 @@ class _HomeState extends State<Home> {
 
   MainTabController tabController = Get.put(MainTabController());
   MainEnvController envController = Get.put(MainEnvController());
+  MainCollectionController _ = Get.put(MainCollectionController());
 
   @override
   Widget build(BuildContext context) {
