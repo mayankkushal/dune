@@ -1,6 +1,6 @@
+import 'package:dune/controllers/main_collection_controller.dart';
 import 'package:dune/controllers/main_env_controller.dart';
 import 'package:dune/theme.dart';
-import 'package:dune/widgets/collection_section.dart';
 import 'package:dune/widgets/main_tab_bar/tab_bar.dart';
 import 'package:dune/widgets/side_bar.dart';
 import 'package:dune/widgets/split.dart';

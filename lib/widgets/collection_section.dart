@@ -1,178 +1,12 @@
+import 'package:dune/controllers/collection_controller.dart';
+import 'package:dune/controllers/main_collection_controller.dart';
 import 'package:dune/controllers/main_tab_controller.dart';
 import 'package:dune/controllers/request_controller.dart';
-import 'package:dune/controllers/url_controller.dart';
-import 'package:dune/schema/collection.dart';
-import 'package:dune/schema/folder.dart' as folderItem;
-import 'package:dune/schema/info.dart';
-import 'package:dune/schema/item.dart';
 import 'package:dune/widgets/side_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
-
-import '../constants.dart';
-
-class MainCollectionController extends GetxController {
-  final collections = <Widget>[].obs;
-
-  @override
-  onInit() {
-    super.onInit();
-    var collectionMap = GetStorage().read(COLLECTIONS);
-    Collection? collection = Collection.fromMap(collectionMap);
-    initCollection(collection);
-  }
-
-  static MainCollectionController get to => Get.find();
-
-  void initCollection(Collection? collection) {
-    CollectionController controller =
-        CollectionController(collection: collection);
-    collection!.item!.forEach((element) {
-      if (element is folderItem.Folder) {
-        controller.addFolder(
-            parentController: controller, workingFolder: element);
-      } else {
-        controller.addRequest(
-            parentController: controller, workingItem: element);
-      }
-    });
-    collections.add(ChangeNotifierProvider.value(
-      value: controller,
-      child: Folder(
-        position: collections.length,
-        parentController: this,
-      ),
-    ));
-  }
-
-  void addCollection() {
-    CollectionController controller = CollectionController(
-        collection: Collection(info: Info(name: 'Random name')));
-    collections.add(ChangeNotifierProvider.value(
-      value: controller,
-      child: Folder(
-        position: collections.length,
-        parentController: MainCollectionController.to,
-      ),
-    ));
-  }
-
-  void reorder(int oldIndex, int newIndex) {
-    var oldItem = collections[oldIndex];
-    collections[oldIndex] = collections[newIndex];
-    collections[newIndex] = oldItem;
-  }
-}
-
-class CollectionController extends ChangeNotifier {
-  Collection? collection;
-  folderItem.Folder? folder;
-  List<dynamic> item = [];
-
-  CollectionController({this.collection, this.folder});
-
-  bool get isCollection => collection != null;
-
-  String get name => collection != null
-      ? collection!.info!.name as String
-      : folder!.name as String;
-
-  void addItem(dynamic item) {
-    if (isCollection) {
-      if (collection!.item != null)
-        collection!.item!.add(item);
-      else
-        collection!.item = [item];
-    } else {
-      if (folder!.item != null)
-        folder!.item!.add(item);
-      else
-        folder!.item = [item];
-    }
-  }
-
-  void addFolder(
-      {parentController, folderItem.Folder? workingFolder, bool init = false}) {
-    if (workingFolder == null) {
-      workingFolder = folderItem.Folder(name: "Folder test ${item.length}");
-      addItem(workingFolder);
-    }
-    CollectionController controller =
-        CollectionController(folder: workingFolder);
-    var key = UniqueKey();
-
-    workingFolder.item!.forEach((element) {
-      if (element is folderItem.Folder) {
-        controller.addFolder(
-            parentController: controller, workingFolder: element);
-      } else {
-        controller.addRequest(
-            parentController: controller, workingItem: element);
-      }
-    });
-
-    item.add({
-      "identifier": key,
-      "controller": controller,
-      "widget": ChangeNotifierProvider.value(
-        value: controller,
-        child: Folder(
-          key: key,
-          position: item.length,
-          identifier: key,
-          parentController: parentController,
-        ),
-      )
-    });
-    notifyListeners();
-  }
-
-  void addRequest({parentController, Item? workingItem, bool init = false}) {
-    if (workingItem == null) {
-      workingItem = Item(name: "Request test name");
-      addItem(workingItem);
-    }
-
-    UrlController urlController = UrlController(workingItem);
-    RequestController requestController =
-        RequestController(urlController, workingItem);
-
-    var key = UniqueKey();
-    item.add({
-      "identifier": key,
-      "controller": requestController,
-      "widget": ChangeNotifierProvider.value(
-        value: requestController,
-        child: RequestLine(
-          key: key,
-          identifier: key,
-          parentController: parentController,
-        ),
-      )
-    });
-  }
-
-  void saveCollection() async {
-    var storage = GetStorage();
-    await storage.write(COLLECTIONS, collection!.toMap());
-  }
-
-  void save() {}
-
-  void deleteFolder(var identifier) {
-    item.removeWhere((i) => i['identifier'] == identifier);
-    notifyListeners();
-  }
-
-  void reorder(int oldIndex, int newIndex) {
-    var oldItem = item[oldIndex];
-    item[oldIndex] = item[newIndex];
-    item[newIndex] = oldItem;
-  }
-}
 
 class CollectionSection extends StatelessWidget {
   const CollectionSection({Key? key}) : super(key: key);
@@ -258,11 +92,11 @@ class RequestLine extends StatelessWidget {
   }
 }
 
-class Folder extends StatefulWidget {
+class FolderLine extends StatefulWidget {
   final int position;
   final identifier;
   final parentController;
-  Folder(
+  FolderLine(
       {Key? key,
       required this.position,
       required this.parentController,
@@ -270,10 +104,10 @@ class Folder extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Folder> createState() => _FolderState();
+  State<FolderLine> createState() => _FolderLineState();
 }
 
-class _FolderState extends State<Folder> with TickerProviderStateMixin {
+class _FolderLineState extends State<FolderLine> with TickerProviderStateMixin {
   late AnimationController expandController;
   late Animation<double> animation;
   bool expanded = false;
