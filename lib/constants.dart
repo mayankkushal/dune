@@ -40,3 +40,4 @@ const Map<String, String> AUTH_OPTIONS = {
 // Storage keys
 const String ENV_LIST = 'envsList';
 const String GLOBAL_VARIABLES = 'globalVariables';
+const String COLLECTIONS = 'collections';

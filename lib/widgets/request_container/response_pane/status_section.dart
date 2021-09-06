@@ -22,7 +22,7 @@ class StatusSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(7)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: (response != null)
+            child: (response != null && response.hasResponse)
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

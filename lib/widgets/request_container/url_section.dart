@@ -17,12 +17,15 @@ class UrlSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final urlController = context.watch<UrlController>();
-    final responseController = context.read<RequestController>();
+    final requestController = context.read<RequestController>();
     return Column(
       children: [
         TextField(
           controller: urlController.nameInputController,
-          onChanged: (_) => MainTabController.to.update(),
+          onChanged: (value) {
+            requestController.updateName(value);
+            MainTabController.to.update();
+          },
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +74,7 @@ class UrlSection extends StatelessWidget {
                   background: AppColors.background),
             ),
             ElevatedButton(
-                onPressed: responseController.fetchRequest,
+                onPressed: requestController.fetchRequest,
                 child: Text("Submit"))
           ],
         ),

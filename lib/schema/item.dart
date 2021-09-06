@@ -30,16 +30,21 @@ class Item {
       return null;
     }
 
-    return Item(
+    Item item = Item(
       name: map['name']?.toString(),
       request: RequestItem.fromMap(DartDynamic.asMap(map['request'])),
       protocolProfileBehavior: ProtocolProfileBehavior.fromMap(
           DartDynamic.asMap(map['protocolProfileBehavior'])),
-      response: List<ResponseItem>.from(
+    );
+
+    if (map['response'] != null) {
+      item.response = List<ResponseItem>.from(
         DartDynamic.asList(map['response'])!
             .map((e) => ResponseItem.fromMap(DartDynamic.asMap(e))),
-      ),
-    );
+      );
+    }
+
+    return item;
   }
 
   Future<String> toJson() async => TransformerJson.encode(toMap());

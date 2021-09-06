@@ -7,7 +7,7 @@ import 'item.dart';
 class Folder {
   String? name;
   String? description;
-  List<Item>? item;
+  List<dynamic>? item;
   Folder({
     this.name,
     this.description,
@@ -34,7 +34,11 @@ class Folder {
     };
   }
 
-  factory Folder.fromMap(Map<String, dynamic> map) {
+  static fromMap(Map<String, dynamic>? map) {
+    if (map == null) {
+      return null;
+    }
+
     return Folder(
       name: map['name'],
       description: map['description'],

@@ -5,11 +5,13 @@ import 'package:dune/schema/item.dart';
 const VALID_LANGS = ['json', 'html'];
 
 class ExtendedResponse {
-  final response;
-  final stopwatch;
+  var response;
+  var stopwatch;
   final Item parsedResponse;
 
-  const ExtendedResponse(this.response, this.stopwatch, this.parsedResponse);
+  ExtendedResponse(this.parsedResponse, {this.response, this.stopwatch});
+
+  bool get hasResponse => parsedResponse.response != null;
 
   int? get statusCode => parsedResponse.response?[0].code ?? 0;
 
@@ -39,10 +41,12 @@ class ExtendedResponse {
   }
 
   dynamic get headers => parsedResponse.response?[0].header ?? {};
-  dynamic get url => parsedResponse.request!.url!.raw;
-  int get responseTime => parsedResponse.response![0].responseTime as int;
+  dynamic get url => parsedResponse.request?.url?.raw ?? "";
+  int? get responseTime => parsedResponse.response?[0].responseTime;
 
   dynamic contentSize() {
-    return parsedResponse.response![0].body!.length / 1024;
+    if (parsedResponse.response != null) {
+      return parsedResponse.response![0].body!.length / 1024;
+    }
   }
 }

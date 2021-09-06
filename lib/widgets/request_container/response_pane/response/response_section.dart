@@ -9,7 +9,7 @@ class ResponseSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RequestController responseController =
+    RequestController requestController =
         Provider.of<RequestController>(context);
     return Flexible(
       flex: 90,
@@ -18,7 +18,8 @@ class ResponseSection extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(7)),
-        child: responseController.response != null
+        child: (requestController.response != null &&
+                requestController.response!.hasResponse)
             ? ResponseTabBarContainer()
             : Container(
                 decoration: BoxDecoration(

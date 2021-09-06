@@ -19,6 +19,8 @@ enum ParameterInputType { query, header, body }
 const INITIAL_INPUT_COUNT = 4;
 
 class RequestController with ChangeNotifier {
+  Map<String, dynamic> storedRequest = {};
+
   Map<Widget, Map<dynamic, dynamic>> queryParamMap = {};
   Map<Widget, Map<dynamic, dynamic>> headersMap = {};
   Map<Widget, Map<dynamic, dynamic>> bodyMap = {};
@@ -53,7 +55,10 @@ class RequestController with ChangeNotifier {
     dio.interceptors.add(
       RequestLogger(
           onAddHistory: (object, item) {
-            parsedResponse = item;
+            response!.parsedResponse.request = item.request;
+            response!.parsedResponse.protocolProfileBehavior =
+                item.protocolProfileBehavior;
+            response!.parsedResponse.response = item.response;
             HistoryController.to.addHistory(object, item);
           },
           addHistory: true),
@@ -64,9 +69,8 @@ class RequestController with ChangeNotifier {
     loadInputParam(ParameterInputType.query, data.request?.url?.query ?? "");
     loadInputParam(ParameterInputType.header, data.request?.header ?? "");
     loadRequestBody(data);
-    if (data.request != null) {
-      response = ExtendedResponse({}, Stopwatch(), data);
-    }
+    response = ExtendedResponse(data);
+    parsedResponse = data;
   }
 
   void loadRequestBody(Item data) {
@@ -147,6 +151,10 @@ class RequestController with ChangeNotifier {
     removeParameterInput(getParameterMap(type), input);
   }
 
+  void updateName(String name) {
+    response!.parsedResponse.name = name;
+  }
+
   void updateBasicAuth(String key, String value) {
     basicAuth[key] = value;
     notifyListeners();
@@ -191,6 +199,16 @@ class RequestController with ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
+  bool checkDirty() {
+    if (response!.parsedResponse.toMap().toString() !=
+        storedRequest.toString()) {
+      return true;
+    }
+    return false;
+  }
+
+  void save() {}
 
   Map<String, dynamic> getParameterInputAsMap(ParameterInputType type) {
     var finalQuery = <String, String>{};
@@ -246,7 +264,10 @@ class RequestController with ChangeNotifier {
       }
     }
     stopwatch..stop();
-    response = ExtendedResponse(res, stopwatch, parsedResponse as Item);
+    // response = ExtendedResponse(parsedResponse as Item,
+    //     response: res, stopwatch: stopwatch);
+    response!.response = res;
+    response!.stopwatch = stopwatch;
     ready();
   }
 }

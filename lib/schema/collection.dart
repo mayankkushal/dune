@@ -1,3 +1,4 @@
+import 'package:dune/schema/folder.dart';
 import 'package:dune/schema/item.dart';
 import 'package:postman_dio/helpers.dart';
 
@@ -10,7 +11,7 @@ class Collection {
   });
 
   final Info? info;
-  final List<dynamic>? item;
+  List<dynamic>? item;
 
   Collection copyWith({
     Info? info,
@@ -37,7 +38,9 @@ class Collection {
     return Collection(
       info: Info.fromMap(DartDynamic.asMap(map['info'])),
       item: DartDynamic.asList(map['item'])
-          ?.map((x) => Item.fromMap(DartDynamic.asMap<String, dynamic>(x)))
+          ?.map((x) => x.containsKey('item')
+              ? Folder.fromMap(DartDynamic.asMap<String, dynamic>(x))
+              : Item.fromMap(DartDynamic.asMap<String, dynamic>(x)))
           .toList(),
     );
   }
@@ -48,5 +51,5 @@ class Collection {
       Collection.fromMap(await TransformerJson.decode(source));
 
   @override
-  String toString() => 'Postman(info: $info, item: $item)';
+  String toString() => 'Dune(info: $info, item: $item)';
 }

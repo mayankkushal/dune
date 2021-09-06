@@ -18,8 +18,7 @@ class SideBar extends HookWidget {
     final activePage = useState(0);
 
     void changeTab(int pos) {
-      _controller.animateToPage(pos,
-          duration: Duration(milliseconds: 250), curve: Curves.easeIn);
+      _controller.jumpToPage(pos);
       activePage.value = pos;
     }
 
