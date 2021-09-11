@@ -3,7 +3,7 @@ import 'package:dune/controllers/url_controller.dart';
 import 'package:dune/schema/collection.dart';
 import 'package:dune/schema/folder.dart';
 import 'package:dune/schema/item.dart';
-import 'package:dune/widgets/collection_section.dart';
+import 'package:dune/widgets/collection/collection_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';

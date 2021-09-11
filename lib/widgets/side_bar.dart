@@ -1,4 +1,4 @@
-import 'package:dune/widgets/collection_section.dart';
+import 'package:dune/widgets/collection/collection_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 

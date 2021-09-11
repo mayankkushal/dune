@@ -5,6 +5,7 @@ import 'package:dune/controllers/request_controller.dart';
 import 'package:dune/widgets/side_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +44,7 @@ class CollectionSection extends StatelessWidget {
   }
 }
 
-class RequestLine extends StatelessWidget {
+class RequestLine extends HookWidget {
   final identifier;
   final parentController;
   const RequestLine(
@@ -54,6 +55,16 @@ class RequestLine extends StatelessWidget {
   Widget build(BuildContext context) {
     final requestController = context.watch<RequestController>();
     MainTabController mainTabController = MainTabController.to;
+
+    final name =
+        useState(requestController.urlController.nameInputController.text);
+
+    useEffect(() {
+      requestController.urlController.nameInputController.addListener(() {
+        name.value = requestController.urlController.nameInputController.text;
+      });
+    });
+
     return InkWell(
       onTap: () {
         mainTabController.addRequestPage(requestController.parsedResponse,
@@ -69,7 +80,7 @@ class RequestLine extends StatelessWidget {
                   Icons.arrow_right,
                   color: Colors.transparent,
                 ),
-                Text(requestController.urlController.nameInputController.text),
+                Text(name.value),
               ],
             ),
             PopupMenuButton(
