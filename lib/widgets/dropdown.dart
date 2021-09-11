@@ -123,7 +123,7 @@ class DropdownFormFieldState<T> extends State<DropdownFormField>
   Timer? _debounce;
   String? _lastSearchString;
 
-  DropdownFormFieldState() : super() {}
+  DropdownFormFieldState() : super();
 
   @override
   void initState() {

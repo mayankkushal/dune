@@ -19,8 +19,9 @@ class _BodyContainerState extends State<BodyContainer>
 
   @override
   Widget build(BuildContext context) {
-    final response = context.select((RequestController p) => p.response);
     super.build(context);
+    final response = context.select((RequestController p) => p.response);
+
     return RepaintBoundary(
       child: SelectableHighlightView(
         response!.body,

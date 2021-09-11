@@ -102,8 +102,6 @@ class CollectionController extends ChangeNotifier {
     await storage.write(COLLECTIONS, collection!.toMap());
   }
 
-  void save() {}
-
   void deleteFolder(var identifier) {
     item.removeWhere((i) => i['identifier'] == identifier);
     notifyListeners();

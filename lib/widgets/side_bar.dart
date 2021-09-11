@@ -11,7 +11,7 @@ const ENV_POS = 1;
 const COLLECTION_POS = 0;
 
 class SideBar extends HookWidget {
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,16 @@ import 'package:provider/provider.dart';
 
 import 'env_controller.dart';
 
-class RequestPage {
+class Page {
+  String get name => "";
+  String get method => "";
+
+  int getOpenPosition(dynamic pages) {
+    return pages.indexWhere((page) => page.name == this.name);
+  }
+}
+
+class RequestPage extends Page {
   late RequestController responseController;
   late UrlController urlController;
   late Widget page;
@@ -30,11 +39,14 @@ class RequestPage {
     );
   }
 
+  @override
   String get name => urlController.nameInputController.text;
+
+  @override
   String get method => urlController.methodDropDownController.value!['name'];
 }
 
-class EnvironmentPage {
+class EnvironmentPage extends Page {
   late EnvController envController;
   late Widget page;
 
@@ -44,7 +56,10 @@ class EnvironmentPage {
         value: envController, child: EnvironmentContainer());
   }
 
+  @override
   String get name => envController.environment.name;
+
+  @override
   String get method => "ENV";
 }
 
@@ -60,7 +75,17 @@ class MainTabController extends GetxController {
 
   static MainTabController get to => Get.find();
 
-  void addPage() {
+  void checkOpenAndAdd(Page page) {
+    var position = page.getOpenPosition(pages);
+    if (position == -1) {
+      pages.add(page);
+      activateLastPage();
+    } else {
+      changePage(position);
+    }
+  }
+
+  void activateLastPage() {
     if (pageController.hasClients) {
       pageController.jumpToPage(pages.length - 1);
     }
@@ -68,13 +93,13 @@ class MainTabController extends GetxController {
   }
 
   void addRequestPage(var data, {controller}) {
-    pages.add(RequestPage(data, controller: controller));
-    addPage();
+    RequestPage page = RequestPage(data, controller: controller);
+    checkOpenAndAdd(page);
   }
 
   void addEnvPage(Environment data) {
-    pages.add(EnvironmentPage(data));
-    addPage();
+    EnvironmentPage page = EnvironmentPage(data);
+    checkOpenAndAdd(page);
   }
 
   void removePage(int position) {

@@ -90,6 +90,7 @@ class RequestController with ChangeNotifier {
     addParameter(ParameterInputType.query, count: INITIAL_INPUT_COUNT);
     addParameter(ParameterInputType.header, count: INITIAL_INPUT_COUNT);
     addParameter(ParameterInputType.body, count: INITIAL_INPUT_COUNT);
+    response = ExtendedResponse(Item());
     rawBodyController = CodeController(
       text: "{ \n\t\n}",
       patternMap: {
@@ -152,7 +153,7 @@ class RequestController with ChangeNotifier {
   }
 
   void updateName(String name) {
-    response!.parsedResponse.name = name;
+    response?.parsedResponse.name = name;
   }
 
   void updateBasicAuth(String key, String value) {

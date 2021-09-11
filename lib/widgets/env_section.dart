@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class EvironmentSection extends StatelessWidget {
-  MainEnvController envController = MainEnvController.to;
-  MainTabController tabController = MainTabController.to;
+  final MainEnvController envController = MainEnvController.to;
+  final MainTabController tabController = MainTabController.to;
 
   @override
   Widget build(BuildContext context) {

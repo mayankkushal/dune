@@ -8,7 +8,7 @@ import 'theme.dart';
 
 class App extends StatelessWidget {
   final data = GetStorage();
-  HistoryController historyController = Get.put(HistoryController());
+  final HistoryController historyController = Get.put(HistoryController());
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
